@@ -3,8 +3,8 @@ package org.enguage.sign;
 import org.enguage.sign.factory.Spoken;
 import org.enguage.sign.interpretant.Intention;
 import org.enguage.sign.interpretant.Intentions;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.Temporal;
-import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.pattern.Frag;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.symbol.where.Where;
@@ -136,7 +136,7 @@ public class Sign {
 	public static Strings perform( Strings args ) {
 		
 		if (args.isEmpty())
-			return new Strings( Perform.S_FAIL);
+			return new Strings( Response.notOkay().toString());
 		
 		return Spoken.perform( args );
 }	}

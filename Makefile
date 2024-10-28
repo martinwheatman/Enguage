@@ -94,4 +94,4 @@ clean:
 	(cd opt/flatpak; make clean)
 	(cd opt/snapcraft; snapcraft clean; rm -f enguage.tgz enguage_*.snap)
 	@rm -rf ${TMP} lib/ selftest/ variable ${SHAR} values/ # var
-	#find . -name "*.class" -exec /bin/rm {} \;
+	find . -name "*.class" -exec /bin/rm {} \;

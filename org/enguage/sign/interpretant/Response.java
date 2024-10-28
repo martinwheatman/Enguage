@@ -13,7 +13,7 @@ public class Response {
 		E_SOZ, // SORRY -- -ve
 		E_NO,  // FALSE -- -ve
 		E_OK,  // TRUE  -- +ve identical to 'yes'
-		E_YES,  // TRUE  -- +ve identical to 'yes'
+		E_YES, // TRUE  -- +ve identical to 'yes'
 		E_CHS; // narrative verdict - meh!
 	}
 	
@@ -34,43 +34,31 @@ public class Response {
 		else return Type.E_CHS;
 	}
 
-	public static  final String S_OKAY   = "ok";
-	private static Strings okay    = new Strings( S_OKAY );
+	private static Strings okay    = new Strings( "ok" );
 	public  static void    okay( String s ) {okay = new Strings( s.toLowerCase( Locale.getDefault() ));}
 	public  static Strings okay() {return okay;}
 
-	public static  final String S_NOT_OK = "sorry";
-	private static Strings notOkay = new Strings( S_NOT_OK );
+	private static Strings notOkay = new Strings( "sorry" );
 	public  static void    notOkay( String s ) {notOkay = new Strings( s.toLowerCase( Locale.getDefault() ));}
 	public  static Strings notOkay() {return notOkay;}
 	
-	private static final String dnkStr = "DNK";
-	private static Strings dnk = new Strings( dnkStr );
+	private static Strings dnk = new Strings( "DNK" );
 	public  static void    dnk( String s ) {dnk = new Strings( s.toLowerCase( Locale.getDefault() ));}
 	public  static Strings dnk() {return dnk;}
-	public  static String  dnkStr() {return dnkStr;}
-
-	private static final String  noStr = "no";
-	private static Strings no = new Strings( noStr );
+	
+	private static Strings no = new Strings( "no" );
 	public  static void    no(  String s ) {no = new Strings( s.toLowerCase( Locale.getDefault() ));}
 	public  static Strings no() {return no;}
-	public  static String  noStr() {return noStr;}
 	
-	private static final String  yesStr = "yes";
-	private static Strings yes    = new Strings( yesStr );
+	private static Strings yes    = new Strings( "yes" );
 	public  static void    yes( String s ) {yes = new Strings( s.toLowerCase( Locale.getDefault() ));}
 	public  static Strings yes() {return yes;}
-	public  static String  yesStr() {return yesStr;}
-
-	private static final String  dnuStr = "DNU";
-	private static Strings dnu = new Strings( dnuStr );
+	
+	private static Strings dnu = new Strings( "DNU" );
 	public  static void    dnu( String s ) {dnu = new Strings( s.toLowerCase( Locale.getDefault() ));}
 	public  static Strings dnu(){return dnu;}
-	public  static String  dnuStr(){return dnuStr;}
-
-	private static final String  uduStr = "UDU";
-	private static Strings udu = new Strings( uduStr );
+	
+	private static Strings udu = new Strings( "UDU" );
 	public  static void    udu( String s ) {udu = new Strings( s.toLowerCase( Locale.getDefault() ));}
 	public  static Strings udu() {return udu;}
-	public  static String  uduStr() {return uduStr;}
 }

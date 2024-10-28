@@ -33,8 +33,6 @@ public class Reply {
 	public  Response.Type  type() {return type;}
 	public  Reply          type( Response.Type t ) {type = t; return this;}
 	
-	public  boolean isFelicitous() {return Response.isFelicitous( type );}
-
 	/* ------------------------------------------------------------------------
 	 * Say list
 	 */
@@ -93,7 +91,7 @@ public class Reply {
 		verbatimIs( false );
 	}
 	public void toIdk() {
-		format( Response.dnkStr());
+		format( Response.dnk());
 		type( Response.Type.E_DNK );
 		answer( NO_ANSWER ); // reset
 	}

@@ -58,7 +58,7 @@ On "AND-LIST-SUBJECTS both need PHRASE-THESE":
 ###############################################################################
 # Various singular additions
 On "i need PHRASE-THIS":
-	set subject to _user;
+	set subject to me;
 	THIS exists in SUBJECT needs list;
 	if so, reply "yes, i know";
 	if not, add THIS to SUBJECT needs list;
@@ -66,7 +66,7 @@ On "i need PHRASE-THIS":
 	reply "ok, you need ... ".
 
 On "i need NUMERIC-QUANTITY PHRASE-THIS":
-	set subject to _user;
+	set subject to me;
 	QUANTITY THIS exists in SUBJECT needs list;
 	if so, reply "yes, i know";
 	if not, add QUANTITY THIS to SUBJECT needs list;
@@ -93,17 +93,17 @@ On "SUBJECT needs NUMERIC-QUANTITY UNIT of PHRASE-THIS":
 
 ## Elaboration of subsequent utterances
 On "and another":
-	is subject set to _user;
+	is subject set to me;
 	if so, i need another THIS;
 	if not, SUBJECT needs another THIS.
 
 On "and another THIS":
-	is subject set to _user;
+	is subject set to me;
 	if so, i need another THIS;
 	if not, SUBJECT needs another THIS.
 
 On "and another UNITS of PHRASE-THIS":
-	is subject set to _user;
+	is subject set to me;
 	if so,  i need another UNITS of THIS;
 	if not, SUBJECT needs another UNITS of THIS.
 
@@ -131,10 +131,13 @@ On "they are":
 	reply "ok, they are LOCATOR LOCATION".
 	
 #########################################
-### and bananas and apples
+### and bananas and apples, and a biscuit
 #########################################
 
+On "and THING", we need THING.
 On "and AND-LIST-THINGS", we need THINGS.
+On "and QUANTITY THING", we need QUANTITY THING.
+On "and QUANTITY UNIT of THING", we need QUANTITY UNIT of THING.
 	
 #########################################
 ### does not need... removals
@@ -151,7 +154,7 @@ On "SUBJECT does not need  OR-LIST-THESE":
 	reply "ok, SUBJECT don't need THESE".
 
 On "i do not need AND-LIST-THESE":
-	set subject to _user;
+	set subject to me;
 	SUBJECT does not need THESE;
 	reply "ok, you don't need THESE".
 
@@ -161,7 +164,7 @@ On "i do not need OR-LIST-THESE":
 	reply "ok, you don't need THESE".
 
 On "i do not need anything":
-	set subject to _user;
+	set subject to me;
 	remove everything from SUBJECT needs list;
 	reply "ok, you do not need anything [LOCATOR LOCATION]".
 
@@ -170,7 +173,7 @@ On "SUBJECT does not need anything":
 	reply "ok, SUBJECT does not need anything [LOCATOR LOCATION]".
 
 On "i do not need PHRASE-THIS":
-	set subject to _user;
+	set subject to me;
 	THIS exists in SUBJECT needs list;
 	if not, reply "yes, i know";
 	remove THIS from SUBJECT needs list;
@@ -199,7 +202,7 @@ On "SUBJECT does not need NUMERIC-QUANTITY UNIT of PHRASE-THIS":
 	reply "ok, SUBJECT does not need ...".
 
 On "i do not need any PHRASE-THIS":
-	set subject to _user;
+	set subject to me;
 	THIS exists in SUBJECT needs list;
 	if not, reply "yes, i know";
 	remove any THIS from SUBJECT needs list;
@@ -223,25 +226,25 @@ On "what does SUBJECT need":
 	reply "SUBJECT needs ...".
 
 On "what  do   i   need":
-	set subject to _user;
+	set subject to me;
 	get SUBJECT needs list;
 	if not, reply "you do not need anything";
 	reply "you need ...".
 
 On "do i need PHRASE-THIS":
-	set subject to _user;
+	set subject to me;
 	THIS exists in SUBJECT needs list;
 	if not, reply "no, you does not need THIS";
 	reply "yes, you need THIS".
 
 On "do i need NUMERIC-QUANTITY PHRASE-THIS":
-	set subject to _user;
+	set subject to me;
 	QUANTITY THIS exists in SUBJECT needs list;
 	if not, reply "no, you do not need QUANTITY THIS";
 	reply "yes, you need QUANTITY THIS".
 
 On "do i need NUMERIC-QUANTITY UNIT of PHRASE-THIS":
-	set subject to _user;
+	set subject to me;
 	QUANTITY UNIT of THIS exists in SUBJECT needs list;
 	if not, reply "no, you does not need QUANTITY UNIT of THIS";
 	reply "yes, you need QUANTITY UNIT of THIS".
@@ -266,17 +269,17 @@ On "does SUBJECT need NUMERIC-QUANTITY UNIT of PHRASE-THIS":
 # how many...
 #########################################
 On "how many PHRASE-THIS do i need":
-	set subject to _user;
+	set subject to me;
 	THIS exists in SUBJECT needs list;
 	if not, reply "you do not need THIS";
 	how many THIS in SUBJECT needs list;
 	reply "..., you need ... THIS".
 
 On "how many UNIT of PHRASE-THIS does SUBJECT need":
-	set subject to _user;
+	set subject to me;
 	THIS exists in SUBJECT needs;
 	if not, reply "SUBJECT does not need THIS";
-	how many UNIT of THIS in _user needs list;
+	how many UNIT of THIS in me needs list;
 	reply "..., SUBJECT needs ... UNIT of THIS".
 
 On "how many PHRASE-THIS does SUBJECT need":
@@ -291,13 +294,13 @@ On "how many PHRASE-THIS does SUBJECT need":
 #########################################
 On "i        need         NUMERIC-QUANTITY", i need QUANTITY THIS.
 On "i        need         nothing":
-	_user does not need anything;
+	me does not need anything;
 	reply "ok, you don't need anything".
 
-On "i        need to get  PHRASE-THIS", _user needs THIS.
-On "i do not need to get  PHRASE-THIS", _user does not need THIS.
+On "i        need to get  PHRASE-THIS", me needs THIS.
+On "i do not need to get  PHRASE-THIS", me does not need THIS.
 
-On "do i need PHRASE-THIS",          does _user need THIS.
+On "do i need PHRASE-THIS",          does me need THIS.
 
 
 ########################

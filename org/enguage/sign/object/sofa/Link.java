@@ -57,10 +57,10 @@ public class Link {
 	}
 	static public Strings perform( Strings args ) {
 		audit.in( "interpret", "["+ args.toString( Strings.CSV ) +"]" ); 
-		String rc = Perform.S_FAIL;
+		String rc = Response.notOkay().toString();
 		int argc = args.size();
 		if (argc >= 3 || argc <= 5) {
-			rc = Perform.S_SUCCESS;
+			rc = Response.okay().toString();
 			String	cmd    = args.remove( 0 ),
 					entity = args.remove( 0 ),
 					attr   = args.remove( 0 ),
@@ -73,15 +73,15 @@ public class Link {
 			if (Attribute.isAttribute( target )) target = new Attribute( target ).value();
 					
 			if (cmd.equals("set") || cmd.equals( "create" ))
-				rc = new Value( entity, attr+EXT ).set( target ) ? Perform.S_SUCCESS : Perform.S_FAIL;
+				rc = new Value( entity, attr+EXT ).set( target ) ? Response.okay().toString() : Response.notOkay().toString();
 				
 			else if (cmd.equals("get"))
 				rc = new Value( entity, attr+EXT ).get();
 				
 			else if (cmd.equals("exists"))
-				rc = target.equals( "" ) ?
-						new Value( entity, attr+EXT ).exists() ? Response.yesStr() : Response.noStr()
-						: exists( entity, attr+EXT, target ) ? Response.yesStr() : Response.noStr();
+				rc = (target.equals( "" ) ?
+						new Value( entity, attr+EXT ).exists() ? Response.yes() : Response.no()
+						: exists( entity, attr+EXT, target ) ? Response.yes() : Response.no()).toString();
 				
 			else if (cmd.equals("delete"))
 				if (target.equals( "" ))
@@ -89,10 +89,10 @@ public class Link {
 				else if (exists( entity, attr+EXT, target ))
 					new Value( entity, attr+EXT ).ignore();
 				else
-					rc =  Perform.S_FAIL;
+					rc =  Response.notOkay().toString();
 				
 			else if (cmd.equals("attribute"))
-				rc = attribute( entity, attr, target, value ) ? Perform.S_SUCCESS : Perform.S_FAIL;
+				rc = attribute( entity, attr, target, value ) ? Response.okay().toString() : Response.notOkay().toString();
 			
 			else
 				usage( "cmd="+ cmd +", ent="+ entity +", attr="+ attr +", [ "+ args +" ]" );
@@ -114,22 +114,22 @@ public class Link {
 		
 		Overlay.attach( "Link" );
 		
-		test( "create martin loves ruth",          Perform.S_SUCCESS );
-		test( "create martin hates name=\"ruth\"", Perform.S_SUCCESS );
-		test( "delete martin hates ruth",          Perform.S_SUCCESS );
+		test( "create martin loves ruth",          Response.okay().toString() );
+		test( "create martin hates name=\"ruth\"", Response.okay().toString() );
+		test( "delete martin hates ruth",          Response.okay().toString() );
 		test( "exists martin hates",        "no" );
 		test( "exists martin hates ruth",   "no" );
 		test( "exists martin loves",        "yes" );
 		test( "exists martin loves ruth",   "yes" );
-		test( "create engineer isa person", Perform.S_SUCCESS );
-		test( "create martin isa engineer", Perform.S_SUCCESS );
+		test( "create engineer isa person", Response.okay().toString() );
+		test( "create martin isa engineer", Response.okay().toString() );
 		test( "exists martin isa",          "yes" );
 		test( "exists martin isa person",   "yes" );
 		test( "exists person isa martin",   "no" );
 		
 		new Value( "person", "age" ).set( "42" );
-		test( "attribute martin isa age 42",     Perform.S_SUCCESS );
-		test( "attribute martin isa age 55",     Perform.S_FAIL );
+		test( "attribute martin isa age 42",     Response.okay().toString() );
+		test( "attribute martin isa age 55",     Response.notOkay().toString() );
 			
 		Audit.PASSED();
 }	}

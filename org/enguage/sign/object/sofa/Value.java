@@ -2,6 +2,7 @@ package org.enguage.sign.object.sofa;
 
 import java.io.File;
 
+import org.enguage.sign.interpretant.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -77,13 +78,13 @@ public class Value {
 	private static String usage( String a ) {
 		audit.debug( "Usage: [set|get|add|exists|equals|delete] <ent> <attr>{/<attr>} [<values>...]\n"+
 				   "given: "+ a );
-		return Perform.S_FAIL;
+		return Response.notOkay().toString();
 	}
 	public static  Strings perform( Strings a ) {
 		// sa might be: [ "add", "_user", "need", "some", "beer", "+", "some crisps" ]
 		audit.in( "interpret", a.toString( Strings.CSV ));
 		a = a.normalise();
-		String rc = Perform.S_SUCCESS;
+		String rc = Response.okay().toString();
 		if (a.size() > 2) {
 			
 			String       cmd = a.remove( 0 ); 
@@ -107,10 +108,10 @@ public class Value {
 					v.set( value );
 				
 				else if (cmd.equals( "equals" )) 
-					rc = v.equals( value ) ? Perform.S_SUCCESS : Perform.S_FAIL;
+					rc = v.equals( value ) ? Response.okay().toString() : Response.notOkay().toString();
 				
 				else if (cmd.equals( "contains" ))
-					rc = v.contains( value ) ? Perform.S_SUCCESS : Perform.S_FAIL;
+					rc = v.contains( value ) ? Response.okay().toString() : Response.notOkay().toString();
 				
 				else
 					usage( cmd, entity, attribute, a );
@@ -123,17 +124,17 @@ public class Value {
 					v.unset();
 				
 				else if (cmd.equals( "isSet" ))
-					rc = v.isSet() ? Perform.S_SUCCESS : Perform.S_FAIL;
+					rc = v.isSet() ? Response.okay().toString() : Response.notOkay().toString();
 				
 				else if (cmd.equals( "delete" ))
 					v.ignore();
 				
 				else if (cmd.equals( "undelete" ))
-					rc = v.restore() ? Perform.S_SUCCESS : Perform.S_FAIL ;
+					rc = v.restore() ? Response.okay().toString() : Response.notOkay().toString() ;
 				
 				else if (cmd.equals( "exists" ))
 					// could check to see if it contains <attribute>?
-					rc = v.exists()  ? Perform.S_SUCCESS : Perform.S_FAIL ;
+					rc = v.exists()  ? Response.okay().toString() : Response.notOkay().toString() ;
 				
 				else 
 					rc = usage( cmd, entity, attribute, a );

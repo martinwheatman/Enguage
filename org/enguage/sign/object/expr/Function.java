@@ -5,7 +5,6 @@ import java.util.ListIterator;
 import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Overlay;
-import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.symbol.number.Number;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
@@ -47,7 +46,7 @@ public class Function {
 		);
 		
 		audit.out();
-		return Perform.Success;
+		return Response.okay();
 	}
 	public String toString() {return name + (lambda==null ? "<noLambda/>" : lambda.toString());}
 	
@@ -98,7 +97,7 @@ public class Function {
 	public static Strings interpret( String arg ) { return perform( new Strings( arg ));}
 	public static Strings perform( Strings argv ) {
 		//audit.in( "interpret", argv.toString( Strings.DQCSV ));
-		Strings rc = Perform.Fail;
+		Strings rc = Response.notOkay();
 		if (argv.size() >= 2) {
 			String      cmd = argv.remove( 0 ),
 			       function = argv.remove( 0 );

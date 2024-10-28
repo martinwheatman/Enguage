@@ -9,7 +9,7 @@ On "SUBJECT is not meeting anybody":
 	delete SUBJECT meeting list;
 	reply "ok, SUBJECT is not meeting anybody".
 On "i am not meeting anybody", _user is not meeting anybody.
-On "i am not meeting anyone",  _user is not meeting anybody.
+On "i am not meeting anyone",      i am not meeting anybody.
 
 On "SUBJECT is meeting PHRASE-WHOM":
 	assert SUBJECT is meeting WHOM;
@@ -17,7 +17,6 @@ On "SUBJECT is meeting PHRASE-WHOM":
 	perform "items add SUBJECT meeting WHOM";
 	reply "ok, SUBJECT is meeting WHOM ...".
 On "i am meeting PHRASE-WHOM", _user is meeting WHOM.
-#On "help", reply "to say who you are meeting".
 
 On "when is SUBJECT meeting PHRASE-WHOM":
 	get SUBJECT meeting list;       # General i don't know
@@ -44,7 +43,6 @@ On "where is SUBJECT meeting PHRASE-WHOM":
 	get SUBJECT meeting list;
 	reply "SUBJECT is meeting ...".
 On "where am i meeting PHRASE-WHOM", where is _user meeting WHOM.
-#On "help", reply "to find out where you are meeting the person".
 
 On "SUBJECT is not meeting PHRASE-WHOM":
 	perform "items remove SUBJECT meeting WHOM";
@@ -59,8 +57,7 @@ On "is SUBJECT meeting PHRASE-WHOM":
 On "am i meeting PHRASE-WHOM", is _user meeting WHOM.
 
 On "who is SUBJECT meeting":
-	perform "items get SUBJECT meeting -";
+	perform "items get SUBJECT meeting";
 	if not, reply "SUBJECT is not meeting anybody";
 	reply "SUBJECT is meeting ...".
 On "who am i meeting", who is _user meeting.
-#On "help", reply "to list who you are meeting".

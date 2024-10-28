@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import org.enguage.sign.Config;
-import org.enguage.sign.object.sofa.Perform;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.symbol.number.Number;
 import org.enguage.sign.symbol.where.Where;
@@ -221,7 +221,7 @@ public class Items extends ArrayList<Item> {
 	 * Returns number removed: existing - to be removed.
 	 */
 	private String removeQuantity( Item tbr, boolean exact ) {
-		String rc = Perform.S_FAIL;
+		String rc = Response.notOkay().toString();
 		audit.in("removeQuantity", "item="+ tbr.toXml() +", exact="+ (exact?"T":"F"));
 		
 		int n;
@@ -253,7 +253,7 @@ public class Items extends ArrayList<Item> {
 				rc = tbr.toString(); // prepare return value
 				
 		}
-		if (!rc.equals( Perform.S_FAIL ))
+		if (!rc.equals( Response.notOkay().toString() ))
 			value.set( toXml() ); // put list back...
 		return audit.out( rc );
 	}
@@ -267,7 +267,7 @@ public class Items extends ArrayList<Item> {
 		}
 		for (Item itm : reprieve) add( itm );
 		value.set( toXml() );
-		return audit.out( Perform.S_SUCCESS );
+		return audit.out( Response.okay().toString() );
 	}
 	static public Strings perform( Strings sa ) {
 		
@@ -303,7 +303,7 @@ public class Items extends ArrayList<Item> {
 		 * in it which means the first (or last) param of each component 
 		 * needs to be converted, and the operation called for each.
 		 */
-		Strings rc = Perform.Fail;
+		Strings rc = Response.notOkay();
 		audit.in( "perform", sa.toString());
 		
 		String	cmd = sa.remove( 0 ),
@@ -315,11 +315,11 @@ public class Items extends ArrayList<Item> {
 		
 		if (cmd.equals( "delete" )) {
 			list.ignore();
-			rc = Perform.Success;
+			rc = Response.okay();
 			
 		} else if (cmd.equals( "undelete" )) {
 			list.restore();
-			rc = Perform.Success;
+			rc = Response.okay();
 				
 		} else if (sa.size() == 0) {
 			if (cmd.equals("get"))
@@ -327,7 +327,7 @@ public class Items extends ArrayList<Item> {
 			
 			else if (cmd.equals( "removeAll" )) {
 				list.removeAll( (Item)null );
-				rc = Perform.Success;
+				rc = Response.okay();
 			}
 		
 		} else if (cmd.equals( "isLinked" )) {
@@ -337,12 +337,12 @@ public class Items extends ArrayList<Item> {
 
 			if (Transitive.are( from.name(), to.name() ))
 				rc = list.isLinked( from, to )
-						? Perform.Success : Perform.Fail;
+						? Response.okay() : Response.notOkay();
 			else {
-				rc = Perform.Fail;
+				rc = Response.notOkay();
 				for (Item li : list)
 					if (li.attributes().contains( from, to )) {
-						rc = Perform.Success;
+						rc = Response.okay();
 						break;
 			}		}
 
@@ -356,28 +356,28 @@ public class Items extends ArrayList<Item> {
 				
 				if (cmd.equals( "exists" )) {
 					if (list.exists( item, params )) {
-						if (rca.size() == 0) rca.add( Perform.S_SUCCESS );
+						if (rca.size() == 0) rca.add( Response.okay().toString() );
 					} else {
 						rca = new Strings();
-						rca.add( Perform.S_FAIL );
+						rca.add( Response.notOkay().toString() );
 						break;
 					}
 					
 				} else if (cmd.equals( "notExists" )) {
 					if (!list.exists( item, params )) {
-						if (rca.size() == 0) rca.add( Perform.S_SUCCESS );
+						if (rca.size() == 0) rca.add( Response.okay().toString() );
 					} else {
 						rca = new Strings();
-						rca.add( Perform.S_FAIL );
+						rca.add( Response.notOkay().toString() );
 						break;
 					}
 					
 				} else if (cmd.equals( "matches" )) {
 						if (list.matches( item ) != -1) {
-							if (rca.size() == 0) rca.add( Perform.S_SUCCESS );
+							if (rca.size() == 0) rca.add( Response.okay().toString() );
 						} else {
 							rca = new Strings();
-							rca.add( Perform.S_FAIL );
+							rca.add( Response.notOkay().toString() );
 							break;
 						}
 						
@@ -387,7 +387,7 @@ public class Items extends ArrayList<Item> {
 							item,
 							new Attribute( sa.get( 1 )).value()
 					);
-					rca.add( Perform.S_SUCCESS );
+					rca.add( Response.okay().toString() );
 					
 				} else if (cmd.equals( "getAttrVal" )) {
 					
@@ -429,7 +429,7 @@ public class Items extends ArrayList<Item> {
 			}
 			// some (e.g. get) may have m-values, some (e.g. exists) only one
 			rc = rca.size() == 0 ?
-					Perform.Fail : new Strings( rca.toString( Config.andListFormat()));
+					Response.notOkay() : new Strings( rca.toString( Config.andListFormat()));
 		}
 		return audit.out( rc );
 	}

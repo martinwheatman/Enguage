@@ -14,11 +14,11 @@ public class SofaPerform {
 	
 	private static String formatAnswer( String answer ) {
 		if (Moment.valid( answer )) // 88888888198888 -> 7pm
-			return new When( answer ).rep( Response.dnkStr() ).toString();
-		else if (answer.equals( Perform.S_FAIL ))
-			return Response.S_NOT_OK;
-		else if (answer.equals( Perform.S_SUCCESS ))
-			return Response.S_OKAY;
+			return new When( answer ).rep( Response.dnk() ).toString();
+		else if (answer.equals( Response.notOkay().toString() ))
+			return Response.notOkay().toString();
+		else if (answer.equals( Response.okay().toString() ))
+			return Response.okay().toString();
 		return answer;
 	}
 	

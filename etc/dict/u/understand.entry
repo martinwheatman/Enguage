@@ -1,0 +1,8 @@
+On "do you understand PHRASE-X":
+	perform "concept count X";
+	if not, reply "no, i do not understand";
+	reply "yes, i understand".
+	
+#] do you understand needs     : yes, i understand.
+#] do you understand i can say : yes, i understand.
+#] do you understand fred      : no, i don't understand.

@@ -1,6 +1,6 @@
 package org.enguage.sign.symbol.pronoun;
 
-import org.enguage.sign.object.sofa.Perform;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.util.attr.Attribute;
@@ -160,10 +160,10 @@ public class Pronoun {
 	static private Strings set( Strings sa ) {
 		// the masculine personal objective pronoun is him =>
 		//    set([ "objective", "singular", "masculine", "him" ]);
-		Strings rc = Perform.Fail;
+		Strings rc = Response.notOkay();
 		if (sa.size() == 4) {
 			int so = -1, mfn = -1, sp = -1;
-			rc = Perform.Success;
+			rc = Response.okay();
 			while (sa.size() > 1) {
 				String s = sa.remove( 0 );
 				if (s.equals( singular ))
@@ -185,17 +185,17 @@ public class Pronoun {
 				else if (s.equals( Gendered.neutral ))
 					mfn = Gendered.NEUTRAL;
 				else {
-					rc = Perform.Fail;
+					rc = Response.notOkay();
 					break;
 			}	}
-			if (rc.equals( Perform.Success ) && so != -1 && sp != -1 && mfn != -1)
+			if (rc.equals( Response.okay() ) && so != -1 && sp != -1 && mfn != -1)
 				set( so, sp, mfn, sa.remove( 0 ));
 		}
 		return rc;
 	}
 	static private Strings name (String name, String value) {
 		// e.g. name subjectives subjects
-		Strings rc = Perform.Success;
+		Strings rc = Response.okay();
 		if (name.equals( subjective ))
 			subjective( value );
 		
@@ -212,7 +212,7 @@ public class Pronoun {
 			possessive( value );
 		
 		else
-			rc = Perform.Fail;
+			rc = Response.notOkay();
 
 		return rc;
 	}
@@ -221,10 +221,10 @@ public class Pronoun {
 		//      (pronoun) set OBJECTIVE PLURAL MASCULINE him
 		//      (pronoun) name subjectives [subjects]
 		audit.in( "interpret", ""+ sa );
-		Strings rc = Perform.Fail;
+		Strings rc = Response.notOkay();
 		int sz = sa.size();
 		if (sz > 0) {
-			rc = Perform.Success;
+			rc = Response.okay();
 			String cmd = sa.remove( 0 );
 			if (cmd.equals("set" ))
 				rc = set( sa );
@@ -232,11 +232,11 @@ public class Pronoun {
 				rc = Gendered.add( sa );
 			else if (cmd.equals( "name" ))
 				if (1==sz) // original size!
-					rc = Perform.Fail; // just cmd
+					rc = Response.notOkay(); // just cmd
 				else
 					name( sa.get( 0 ), sa.get( 1 ));
 			else
-				rc = Perform.Fail;
+				rc = Response.notOkay();
 		}
 		return audit.out( rc );
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.enguage.sign.Assets;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.object.sofa.Overlay;
 import org.enguage.sign.object.sofa.Perform;
@@ -116,7 +117,7 @@ public class Where {
 		String rc = Perform.S_IGNORE;
 		if (!args.isEmpty()) {
 			String cmd = args.remove( 0 );
-			rc = Perform.S_SUCCESS;
+			rc = Response.okay().toString();
 			if (cmd.equals( "add" ))
 				addConcepts( args );
 			else if (cmd.equals( "addCurrent" ))
@@ -124,7 +125,7 @@ public class Where {
 			else if (cmd.equals( "locator" ))
 				locatorIs( Attribute.value( args ));
 			else
-				rc = Perform.S_FAIL;
+				rc = Response.notOkay().toString();
 		}
 		//audit.out( rc )
 		return new Strings( rc );

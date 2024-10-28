@@ -3,6 +3,7 @@ package org.enguage.sign.object.sofa;
 import java.io.File;
 import java.util.Iterator;
 
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.sofa.fs.Path;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -359,7 +360,7 @@ public class Overlay {
 	// ---
 	public static Strings perform( Strings argv ) {
 		
-		String rc = Perform.S_SUCCESS;
+		String rc = Response.okay().toString();
 		int argc = argv.size();
 		
 		String  cmd    = argv.remove( 0 );
@@ -369,7 +370,7 @@ public class Overlay {
 			attach( value );
 			if (highest < 0) {
 				audit.debug( "No such series: "+ value );
-				rc = Perform.S_FAIL;
+				rc = Response.notOkay().toString();
 			}
 				
 		} else if (cmd.equals( "detach" ) && (1 == argc)) {
@@ -399,7 +400,7 @@ public class Overlay {
 			else if (value.equals( "full" ))
 				commit();
 			else
-				rc = Perform.S_FAIL;
+				rc = Response.notOkay().toString();
 			
 		}  else if (cmd.equals( "versions" )) {
 			Audit.log( "versions: >"+ value +"<" );
@@ -409,7 +410,7 @@ public class Overlay {
 				showVersions(argv.toString( Strings.CONCAT ));
 	
 		} else {
-			rc = Perform.S_FAIL;
+			rc = Response.notOkay().toString();
 			audit.debug( "Usage: attach <series>\n"
 			                 +"     : detach\n"
 			                 +"     : save\n"

@@ -320,6 +320,11 @@ public class Concept {
 			for (String file : cmds)
 				Autoload.unloadNamed( file );
 			
+		else if (cmd.equals( "count" ))
+			// concept count "i can say"
+			rc = cmds.isEmpty() || match( new Strings( cmds.remove( 0 )) ).isEmpty()
+					? Response.no() : Response.yes();
+			
 		else
 			rc = Response.notOkay();
 		

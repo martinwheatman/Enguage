@@ -93,10 +93,8 @@ public final class Engine {
 		 };
 	
 	public static Reply interp( Intention in, Reply r ) {
-		r.answer( Response.S_OKAY ); // bland default reply to stop debug output look worrying
-		r.type(
-				Response.typeFromStrings( Response.okay() )
-		);
+		r.answer( Response.okay().toString() ); // bland default reply to stop debug output look worrying
+		r.type(   Response.typeFromStrings( Response.okay() ));
 
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
 		String  cmd  = cmds.remove( 0 );

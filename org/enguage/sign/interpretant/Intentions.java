@@ -100,7 +100,7 @@ public class Intentions extends ArrayList<Intention> {
 	
 	public Reply mediate() {
 		// It's okay where there are no intentions (e.g. "i can say X")
-		Reply r = new Reply().answer( Response.S_OKAY );
+		Reply r = new Reply().answer( Response.okay().toString() );
 		r.type( Response.typeFromStrings( Response.okay() ));
 		
 		Iterator<Intention> ai = this.iterator();

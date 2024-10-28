@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.sofa.Overlay;
-import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.util.attr.Attributes;
@@ -22,7 +22,7 @@ public class Variable {
 	 * prefix variables with '_'
 	 */
 	public  static  final String NAME = "variable";
-	public  static  final int      ID = 262169728; //Strings.hash( NAME );
+	public  static  final int      ID = 262169728; //Strings.hash( NAME )
 	private static       Audit audit = new Audit( "Variable" );
 	
 	private static TreeMap<String,String> cache = encache();
@@ -32,7 +32,7 @@ public class Variable {
 
 	private static TreeMap<String,String> encache( Overlay o ) {
 		//audit.in( "encache", Ospace.location())
-		cache = new TreeMap<String,String>();
+		cache = new TreeMap<>();
 		for( String name : o.list( NAME ))
 			if (name.equals( name.toUpperCase( Locale.getDefault()) )) // if valid variable name
 				cache.put( name, new Value( NAME, name ).get());
@@ -192,8 +192,8 @@ public class Variable {
 	
 	public  static Strings perform( Strings args ) {
 		audit.in( "interpret", args.toString() );
-		String  rc = Perform.S_SUCCESS,
-		       cmd = args.remove( 0 );
+		String  rc = Response.okay().toString();
+		String cmd = args.remove( 0 );
 		int sz = args.size();
 		if (sz > 0) {
 			String name = args.remove( 0 );
@@ -202,7 +202,7 @@ public class Variable {
 					rc = set( name, args.toString() );
 
 				else if (cmd.equals( "equals" ))
-					rc = isSet( name, args.toString()) ? Perform.S_SUCCESS : Perform.S_FAIL;
+					rc = isSet( name, args.toString()) ? Response.okay().toString() : Response.notOkay().toString();
 			
 				else if (cmd.equals( "exception" )) {
 					
@@ -212,27 +212,28 @@ public class Variable {
 					else if (direction.equals( "remove" ))
 						exceptionRemove( args );
 					else
-						rc = Perform.S_FAIL;
+						rc = Response.notOkay().toString();
 				} else
-					rc = Perform.S_FAIL;
+					rc = Response.notOkay().toString();
 				
 			else { // sz == 1, name and no params
 				if (cmd.equals( "exists" ))
-					rc = isSet( name, null ) ? Perform.S_SUCCESS : Perform.S_FAIL;
+					rc = isSet( name, null ) ? Response.okay().toString() : Response.notOkay().toString();
 				else if (cmd.equals( "unset" ))
 					unset( name );
 				else if (cmd.equals( "get" ))
 					rc = get( name.toUpperCase( Locale.getDefault() ));
 				else
-					rc = Perform.S_FAIL;
+					rc = Response.notOkay().toString();
 			}
 		} else if (cmd.equals( "show" )) {
 			audit.debug( "printing cache" );
 			printCache();
 			audit.debug( "printed" );
 		} else
-			rc = Perform.S_FAIL;
-		audit.out( rc = rc==null?"":rc );
+			rc = Response.notOkay().toString();
+		rc = rc==null?"":rc;
+		audit.out( rc );
 		return new Strings( rc );
 	}
 	
@@ -240,14 +241,14 @@ public class Variable {
 	public  static void test( String cmd, String expected ) {
 		Strings actual = perform( new Strings( cmd ));
 		if (actual.equals( new Strings( expected ))) {
-			if ( actual.equals( Perform.Ignore ))
+			if (actual.isEmpty())
 				audit.debug(   "PASS: "+ cmd );
 			else
 				audit.debug(   "PASS: "+ cmd +" = '"+ actual +"'" );
 		} else
 			audit.FATAL( "FAIL: "+ cmd +" = '"+ actual +"' (expected: "+ expected +")" );
 	}
-	public  static void main( String args[] ) {
+	public  static void main( String[] args ) {
 		Overlay.attach( NAME );
 		Audit.on();
 		
@@ -255,7 +256,7 @@ public class Variable {
 		Variable spk = new Variable( "NAME" );
 		String tmp = spk.get();
 		audit.debug( "was="+ (tmp==null?"<null>":tmp));
-		if ( tmp.equals( "fred" ))
+		if ( tmp == null || tmp.equals( "fred" ))
 			perform( new Strings( "set NAME billy boy" ));
 		else
 			spk.set( "fred" );
@@ -270,9 +271,9 @@ public class Variable {
 		//*		Static test, backwards compat...
 		test( "set hello there", "there" );
 		test( "get HELLO", "there" );
-		test( "equals HELLO there", Perform.S_SUCCESS );
+		test( "equals HELLO there", Response.okay().toString() );
 		audit.debug( "deref: HELLO hello there="+ deref( new Strings( "HELLO hello there" )));
-		test( "unset HELLO", Perform.S_SUCCESS );
+		test( "unset HELLO", Response.okay().toString() );
 		test( "get HELLO", "" );
 		{	// derefOrPop test...
 			Variable.unset( "LOCATOR" );

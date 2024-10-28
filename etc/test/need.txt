@@ -110,7 +110,9 @@ i need nothing.
 i need an apple.
 how many apples do i need:  1, you need 1 apples. # <<<<<<<<< see this!
 and oranges and bananas  : ok, you need oranges and bananas.
-what do i need           : you need an apple, oranges, and bananas.
-i don't need oranges or bananas : ok, you don't need oranges or bananas.
-what do i need           : you need an apple.
+and a biscuits           : ok, you need a biscuit.
+what do i need           : you need an apple, oranges, bananas, and a biscuit.
+i don't need oranges or bananas
+                         : ok, you don't need oranges or bananas.
+what do i need           : you need an apple, and a biscuit.
 

@@ -274,6 +274,7 @@ public class When {
 	private String rep = "";
 	public  String rep() { return rep; }
 	public  When   rep( String s ) { rep = s; return this;}
+	public  When   rep( Strings s ) { return rep( s.toString());}
 	
 	public String toString() {
 		String rc = isMoment() ? from.toString( "" ) : toString( "from", "until" );

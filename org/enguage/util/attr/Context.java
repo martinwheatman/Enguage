@@ -2,7 +2,7 @@ package org.enguage.util.attr;
 
 import java.util.ArrayList;
 
-import org.enguage.sign.object.sofa.Perform;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 /** Context: a list of attributes, so a list of list of attribute
@@ -42,13 +42,13 @@ public class Context {
 	}
 	public  static Strings perform( Strings a ) {
 		audit.in( "interpret", "a="+ a );
-		Strings rc = new Strings( Perform.S_FAIL );
+		Strings rc = new Strings( Response.notOkay().toString() );
 		if (a.size() > 1) {
 			String cmd = a.remove( 0 );
 			if (cmd.equals( "add" )) {
 				String name = a.remove( 0 );
 				append( new Attribute( name, a.toString() ));
-				rc = new Strings( Perform.S_SUCCESS );
+				rc = new Strings( Response.okay().toString() );
 		}	}
 		return audit.out( rc );
 	}

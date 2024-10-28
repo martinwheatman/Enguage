@@ -240,7 +240,7 @@ public class Intention {
  			case N_REPLY: r.reply( values );                        break;
  			case N_ALLOP: r = Engine.interp( this, r );             break;
  			default:
- 				if (r.isFelicitous()) {
+ 				if (Response.isFelicitous( r.type() )) {
 		 			switch (type) {
 						case N_THEN_THINK: r = Thought.think( values, r.answer() ); break;
 						case N_THEN_DO:    SofaPerform.perform( r, values );        break;

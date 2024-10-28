@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.enguage.sign.object.sofa.Perform;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
@@ -88,7 +88,7 @@ public class Colloquial {
 	}
 	static public Strings interpret( String  a ) { return perform( new Strings( a )); }
 	static public Strings perform( Strings a ) {
-		if (null == a) return Perform.Fail;
+		if (null == a) return Response.notOkay();
 		//audit.in( "interpret", a.toString( Strings.CSV ));
 		
 		// expand 2nd and 3rd attribute parameters
@@ -134,7 +134,7 @@ public class Colloquial {
 		} else
 			audit.error( "Colloquial.interpret(): wrong number of params: "+ a.toString( Strings.CSV ));
 		//return audit.out( Shell.Success );
-		return Perform.Success;
+		return Response.okay();
 	}
 	public static void main( String args[] ) {
 		Audit.on();

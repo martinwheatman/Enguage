@@ -1,5 +1,6 @@
 package org.enguage.sign.object.sofa;
 
+import org.enguage.sign.interpretant.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
@@ -78,22 +79,22 @@ public class Entity {
 	
 	public static Strings perform( Strings argv ) {
 		// N.B. argv[ 0 ]="create", argv[ 1 ]="martin wheatman"
-		Strings rc = Perform.Fail;
+		Strings rc = Response.notOkay();
 		if (argv.size() > 1) {
 			String cmd = argv.remove( 0 );
 			String ent = argv.remove( 0 );
 			if (cmd.equals( "create" ))
-				rc = create( ent ) ? Perform.Success : Perform.Fail;
+				rc = create( ent ) ? Response.okay() : Response.notOkay();
 			else if (cmd.equals( "component" ))
-				rc = createComponent( argv )? Perform.Success : Perform.Fail;
+				rc = createComponent( argv )? Response.okay() : Response.notOkay();
 			else if (cmd.equals( "delete" ))
-				rc = delete( ent ) ? Perform.Success : Perform.Fail;
+				rc = delete( ent ) ? Response.okay() : Response.notOkay();
 			else if (cmd.equals( "exists" ))
-				rc = exists( ent ) ? Perform.Success : Perform.Fail;
+				rc = exists( ent ) ? Response.okay() : Response.notOkay();
 			else if (cmd.equals( "ignore" ))
-				rc = ignore( ent ) ? Perform.Success : Perform.Fail;
+				rc = ignore( ent ) ? Response.okay() : Response.notOkay();
 			else if (cmd.equals( "restore" ))
-				rc = restore( ent ) ? Perform.Success : Perform.Fail;
+				rc = restore( ent ) ? Response.okay() : Response.notOkay();
 			else
 				Audit.log(
 					"Usage: entity [create|exists|ignore|delete] <entityName>\n"+

@@ -1,6 +1,6 @@
 package org.enguage.sign.object;
 
-import org.enguage.sign.object.sofa.Perform;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
@@ -52,14 +52,14 @@ public class Preferences {
 		editor.commit();
 }*/
 	static public Strings interpret( Strings a ) {
-		Strings rc = Perform.Fail;
+		Strings rc = Response.notOkay();
 		audit.in( "interpret", a.toString( Strings.CSV ));
 		if (preferences != null && null != a && a.size() >= 2) {
 			if (a.get( 0 ).equals( "set" )) {
 				preferences.set( a.get( 1 ), a.copyAfter( 1 ).toString( Strings.SPACED ) ); // default value?
-				rc = Perform.Success;
+				rc = Response.okay();
 			} else if (a.get( 0 ).equals( "get" )) {
-				rc = preferences.get( a.get( 1 ), true ) ? Perform.Success : Perform.Fail; // default value true?
+				rc = preferences.get( a.get( 1 ), true ) ? Response.okay() : Response.notOkay(); // default value true?
 		}	}
 		audit.out( rc );
 		return new Strings( rc );

@@ -2,7 +2,7 @@ package org.enguage.util.http;
 
 import java.io.IOException;
 
-import org.enguage.sign.object.sofa.Perform;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
@@ -17,7 +17,7 @@ public class SapGraph {
 	
 	public  static Strings perform( Strings cmds ) {
 		audit.in( "interprtet", "cmds="+ cmds.toString(Strings.DQCSV) );
-		Strings rc = Perform.Fail;
+		Strings rc = Response.notOkay();
 		String cmd = cmds.remove(0);
 		
 		if (cmd.equals( "query" )) {

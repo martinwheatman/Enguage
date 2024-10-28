@@ -3,7 +3,7 @@ package org.enguage.sign.object.list;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import org.enguage.sign.object.sofa.Perform;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.symbol.config.Plural;
 import org.enguage.sign.symbol.number.Number;
 import org.enguage.sign.symbol.when.Moment;
@@ -288,21 +288,21 @@ public class Item {
 	// ------------------------------------------------------------------------
 	public static Strings perform( Strings cmds ) {
 		audit.in( "interpret", "cmds="+ cmds );
-		String rc = Perform.S_FAIL;
+		String rc = Response.notOkay().toString();
 		if (!cmds.isEmpty()) {
 			
-			rc = Perform.S_SUCCESS;
+			rc = Response.okay().toString();
 			String one = cmds.remove( 0 );
 			
 			if (one.equals( "ungroup" ))
 				if (cmds.isEmpty())
 					groupOn( "" );
 				else
-					rc = Perform.S_FAIL;
+					rc = Response.notOkay().toString();
 
 			else if (one.equals( "groupby" ))
 				if (cmds.isEmpty())
-					rc = Perform.S_FAIL;
+					rc = Response.notOkay().toString();
 				else
 					groupOn( ""+cmds );
 					
@@ -324,9 +324,9 @@ public class Item {
 					stuffIs( new Strings( Strings.stripQuotes( thr )));
 					
 				else
-					rc = Perform.S_FAIL;
+					rc = Response.notOkay().toString();
 			} else
-				rc = Perform.S_FAIL;
+				rc = Response.notOkay().toString();
 		}
 		audit.out( rc );
 		return new Strings( rc );

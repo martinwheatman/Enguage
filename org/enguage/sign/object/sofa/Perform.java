@@ -27,12 +27,7 @@ import org.enguage.util.strings.Strings;
 public class Perform {
 	
 	public  static final String  S_IGNORE  = "";
-	public  static final String  S_FAIL    = Response.S_NOT_OK;
-	public  static final String  S_SUCCESS = Response.S_OKAY;
-	public  static final Strings Ignore  = new Strings( S_IGNORE );
-	public  static final Strings Fail    = new Strings( S_FAIL );
-	public  static final Strings Success = new Strings( S_SUCCESS );
-
+	
 	private Perform() {}
 	
 	private static final Audit audit = new Audit( "Sofa" );
@@ -75,7 +70,7 @@ public class Perform {
 				case Repertoires.ID: return Repertoires.perform(                     a  );
 				default :
 					audit.error( "Perform: "+ type +".ID should be set to "+ Strings.hash( type ));
-					return Perform.Fail;
+					return Response.notOkay();
 		}	}
-		return Perform.Fail;
+		return Response.notOkay();
 }	}

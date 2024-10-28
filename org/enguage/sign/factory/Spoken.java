@@ -9,7 +9,6 @@ import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Intention;
 import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.sofa.Overlay;
-import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.pattern.Pattern;
 import org.enguage.util.audit.Audit;
@@ -222,15 +221,15 @@ public class Spoken {
 			// w/o Audit indents!
 			Audit.log( voiced.toString( false ));
 		} else
-			return Perform.S_FAIL + ", nothing to see here";
-		return Perform.S_SUCCESS;
+			return Response.notOkay().toString() + ", nothing to see here";
+		return Response.okay().toString();
 	}
 	private static String doList() {
 		if (voiced != null) {
 			voiced = rereadVoiceFromValue();
 			return voiced.intentions().toSpokenList();
 		} else
-			return Perform.S_FAIL + ", nothing to see here";
+			return Response.notOkay().toString() + ", nothing to see here";
 	}
 	
 	private static boolean isElse( String cmd ) {return cmd.equals( "else" );}
@@ -249,7 +248,7 @@ public class Spoken {
 		
 		audit.in( "perform", args.toString( Strings.DQCSV ));
 		
-		String      rc = Perform.S_SUCCESS;			
+		String      rc = Response.okay().toString();			
 		String     cmd = args.remove( 0 );
 		boolean isElse = isElse( cmd );
 		boolean isThen = isThen( cmd );
@@ -294,7 +293,7 @@ public class Spoken {
 			doFinally( args, isThen, isElse );
 			
 		else {
-			rc = Perform.S_FAIL;
+			rc = Response.notOkay().toString();
 			audit.error( "Unknown Sign.interpret() command: "+ cmd );
 		}
 		audit.out( rc );

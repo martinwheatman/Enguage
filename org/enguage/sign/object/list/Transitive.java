@@ -1,5 +1,6 @@
 package org.enguage.sign.object.list;
 
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.sofa.Perform;
 import org.enguage.util.attr.Attribute;
 import org.enguage.util.attr.Attributes;
@@ -9,7 +10,7 @@ import org.enguage.util.strings.Strings;
 public class Transitive {
 	
 	public  static final String NAME = "transitive";
-	public  static final int      ID = 245880631; //Strings.hash( NAME );
+	public  static final int      ID = 245880631; //Strings.hash( NAME )
 	private static       Audit audit = new Audit( NAME );
 	
 	private static Strings    concepts = new Strings();
@@ -31,11 +32,11 @@ public class Transitive {
 		return attrs.value( name ).equals( value );
 	}
 
-	static public Strings perform( Strings args ) {
+	public static Strings perform( Strings args ) {
 		audit.in( "interpret", args.toString() );
 		String rc = Perform.S_IGNORE;
 		if (args.size() > 1) {
-			rc = Perform.S_FAIL;
+			rc = Response.notOkay().toString();
 			String cmd = args.remove( 0 );
 			if (cmd.equals( "add" )) {
 				int sz = args.size();
@@ -46,11 +47,11 @@ public class Transitive {
 				}
 				if (sz == 1)
 					addConcepts( args );
-				rc = Perform.S_SUCCESS;
+				rc = Response.okay().toString();
 		}	}
 		return audit.out( new Strings( rc ));
 	}
-	public static void main( String args[] ) {
+	public static void main( String[] args ) {
 		audit.debug( perform( new Strings( "add cause" )));
 		audit.debug( perform( new Strings( "add cause effect" )));
 		audit.debug( "cause->effect: "+ are( "cause", "effect" ));

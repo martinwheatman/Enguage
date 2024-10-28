@@ -28,7 +28,7 @@ public class Question {
 
 	public Question( String q ) { question( q ); }
 
-	private String getLine( String defaultLine ) {
+	private String getLine( Strings defaultLine ) {
 		String line = null;
 		BufferedReader br = new BufferedReader( new InputStreamReader( System.in ));
 		try {
@@ -37,13 +37,13 @@ public class Question {
 		} catch (java.io.IOException e ) {
 			audit.error( "IO exception in Question.getLine( default );" );
 		}
-		return line != null ? line : defaultLine;
+		return line != null ? line : defaultLine.toString();
 	}
 	
 	public String ask() {
 		Audit.log( question() + prompt());
 		Question.logPrimedAns();
-		return primedAnswer != null ? primedAnswer() : getLine( Response.dnuStr());
+		return primedAnswer != null ? primedAnswer() : getLine( Response.dnu());
 	}
 	
 	// helper functions...

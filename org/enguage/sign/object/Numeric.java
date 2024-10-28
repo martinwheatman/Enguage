@@ -2,8 +2,8 @@ package org.enguage.sign.object;
 
 import java.util.ListIterator;
 
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.sofa.Overlay;
-import org.enguage.sign.object.sofa.Perform;
 import org.enguage.sign.object.sofa.Value;
 import org.enguage.sign.symbol.number.Number;
 import org.enguage.util.attr.Attribute;
@@ -79,18 +79,18 @@ public class Numeric extends Value {
 		System.out.println(
 				"Usage: numeric [set|get|remove|increase|decrease|exists|equals|delete] <ent> <attr>[ / <attr> ...] [<values>...]\n"+
 				"given: "+ a.toString( Strings.CSV ));
-		return Perform.S_FAIL;
+		return Response.notOkay().toString();
 	}
 	static public Strings perform( Strings a ) {
 		// interpret( ["increase", "device", "textSize", "4"] )
 		audit.in( "interpret", a.toString( Strings.DQCSV ));
-		String rc = Perform.S_SUCCESS;
+		String rc = Response.okay().toString();
 		if (a.size() > 1) {
 			String cmd = a.get( 0 );
 			
 			if (cmd.equals("isAbs")) { // => Numeric.java?
 				char firstChar = a.get( 1 ).charAt( 0 ); 
-				rc = firstChar == '-' || firstChar == '+' ? Perform.S_FAIL : Perform.S_SUCCESS;
+				rc = firstChar == '-' || firstChar == '+' ? Response.notOkay().toString() : Response.okay().toString();
 				
 			} else if (cmd.equals( "evaluate" )) {
 				// parameters no longer expanded in sofa...!
@@ -106,7 +106,7 @@ public class Numeric extends Value {
 					Number number = new Number( ai );
 					rc = number.valueOf() + a.copyAfter( 1 + number.representamen().size()).toString();
 				} else
-					rc = Perform.S_FAIL;
+					rc = Response.notOkay().toString();
 				
 			} else if (a.size() > 2) {
 				int i = 2;
@@ -126,9 +126,9 @@ public class Numeric extends Value {
 				 */
 				
 				if (cmd.equals( "increase" )) 
-					rc = n.increase( value ) ? Perform.S_SUCCESS : Perform.S_FAIL;
+					rc = n.increase( value ) ? Response.okay().toString() : Response.notOkay().toString();
 				else if (cmd.equals( "decrease" ))
-					rc = n.decrease( value ) ? Perform.S_SUCCESS : Perform.S_FAIL;
+					rc = n.decrease( value ) ? Response.okay().toString() : Response.notOkay().toString();
 				else
 					rc = usage( a );
 			}
