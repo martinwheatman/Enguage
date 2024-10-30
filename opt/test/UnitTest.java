@@ -34,8 +34,8 @@ public class UnitTest {
 	
 	private static final String      LOCATION = "etc";
 	private static final String      DICT_DIR = LOCATION+File.separator+ Concept.DICT +File.separator;
-	private static final String      TEST_DIR = LOCATION+File.separator+ "test" +File.separator;
-	private static final String       REP_DIR = LOCATION+File.separator+Concept.RPTS+File.separator;
+	private static final String      TEST_DIR = LOCATION+File.separator+ "test"       +File.separator;
+	private static final String       REP_DIR = LOCATION+File.separator+ Concept.RPTS +File.separator;
 	private static final String      TEST_EXT = Concept.TEXT_EXT;
 	private static final String      DICT_EXT = Concept.ENTRY_EXT;
 	private static final String       REP_EXT = Concept.REPT_EXT;
@@ -104,15 +104,10 @@ public class UnitTest {
 				audit.FATAL( "Too many replies ("+ replies.length +") provided" );
 	}	}
 
-	private static String fullFname( String dir, String fname ) {
-		return dir.equals(DICT_DIR) // dictionaries are alphabetic: dict/w/word
-				? dir + fname.charAt( 0 ) +File.separator+ fname
-				: dir + fname;
-	}
 	private static boolean runTestFile( String dir, String fname ) {
 		boolean embTest = !dir.equals( TEST_DIR );
 		String marker = embTest ? TEST_START : COMMENT_START;
-		try (Scanner file = new Scanner( new File( fullFname( dir, fname ) ))) {
+		try (Scanner file = new Scanner( new File( dir + fname ) )) {
 			StringBuilder utterance = new StringBuilder();
 			while (file.hasNextLine()) {
 				String line = file.nextLine();
@@ -152,11 +147,10 @@ public class UnitTest {
 			
 			Audit.title( "TEST: "+ test );
 			
-			// true=code before comment, false=
-			if (runTestFile( TEST_DIR, test +WIKI_EXT ) || // find wiki over normal tests
-			    runTestFile( DICT_DIR, test +DICT_EXT ) || // find dictionary over old tests
-			    runTestFile( TEST_DIR, test +TEST_EXT ) ||
-			    runTestFile(  REP_DIR, test +REP_EXT  )    )
+			// Here we are using dictionary entries as the source for tests.
+			// The dictionary is organised with concepts in alphabetic order, e.g. c/concept,
+			if (runTestFile( DICT_DIR, Concept.dictName( test ) +DICT_EXT ) || // find dictionary over old tests
+			    runTestFile( TEST_DIR,                   test   +TEST_EXT )    )
 				testGrp++;
 		}
 		Audit.log( "\n"+ testGrp +" test group(s) found" );

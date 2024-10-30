@@ -3,6 +3,7 @@ package org.enguage.sign.object.sofa;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.repertoires.concepts.Similarity;
+import org.enguage.sign.Assets;
 import org.enguage.sign.Sign;
 import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.Numeric;
@@ -53,6 +54,7 @@ public class Perform {
 				case Value      .ID: return       Value.perform( Attribute.expand23( a ));
 				case Where      .ID: return       Where.perform( Attribute.expand23( a ));
 				case Plural     .ID: return      Plural.perform( Attribute.expand23( a ));
+				case Assets     .ID: return      Assets.perform( Attribute.expand(   a ));
 				case Entity     .ID: return      Entity.perform( Attribute.expand23( a ));
 				case Concept    .ID: return     Concept.perform( Attribute.expand23( a ));
 				case InfoBox    .ID: return     InfoBox.perform( Attribute.expand(   a ));

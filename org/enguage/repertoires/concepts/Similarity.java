@@ -9,11 +9,11 @@ import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
 public class Similarity {
-	public  static final String NAME = "similarity";
-	private static final Audit audit = new Audit( NAME );
-	public  static final int      ID = 230093813; //Strings.hash( "similarity" )
+	public  static final String       NAME = "similarity";
+	private static final Audit       audit = new Audit( NAME );
+	public  static final int            ID = 230093813; //Strings.hash( "similarity" )
 
-	private  static Attributes similarities = new Attributes();
+	private static Attributes similarities = new Attributes();
 	
 	private static boolean load( String name, String load, String from, String to ) {
 		boolean loaded = (null != Autoload.get( name ));
@@ -30,11 +30,12 @@ public class Similarity {
 		for (String synonym : similarities.matchNames( utterance )) {
 			String existing = similarities.value( synonym );
 			if (!load( synonym, existing, existing, synonym )                      &&
+				!load( synonym, Concept.dictName( existing ), existing, synonym )  && // pick up dictionary naming format
 				!load( synonym+"+"+Plural.plural( synonym ),
 				       existing+"+"+Plural.plural( existing ),  existing, synonym ) &&
 				!load( Plural.plural(  synonym )+"+"+synonym,
 				       Plural.plural( existing )+"+"+existing, existing, synonym ))
-				audit.error( "NOT loaded!" );
+				audit.error( "NOT loaded (existing="+ existing +", syn="+ synonym +", "+ Concept.dictionary( existing )+")!" );
 	}	}
 	private  static void autoUnload( String name ) {
 		if (Autoload.unloadConditionally( name ) ||
