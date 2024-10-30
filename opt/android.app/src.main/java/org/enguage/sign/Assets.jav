@@ -6,10 +6,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.enguage.util.strings.Strings;
+
 public class Assets {
 	private Assets() {}
 	
-	public  static final String     NAME = "assets";
+	public  static final String NAME = "assets";
+	public  static final int      ID = 20901783; //Strings.hash( NAME );
 	
 	private static Activity  context = null; // if null, not on Android
 	public  static Activity  context() {return context;}
@@ -32,4 +35,7 @@ public class Assets {
 		} catch (IOException iox) {
 		}
 		return names;
+	}
+	public static Strings perform( Strings args ) {
+		return new Strings( "Sorry, nothing to see here" );
 }	}

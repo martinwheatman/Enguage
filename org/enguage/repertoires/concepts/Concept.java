@@ -67,7 +67,12 @@ public class Concept {
 		return Enguage.RO_SPACE+ loc +File.separator;
 	}
 	
-	private static String dictionary(     String name ) {return ro(DICT)+ name +ENTRY_EXT;}
+	// Unit tests refer to 'concept', in the dictionary they are in 'c/concept'
+	public  static String dictName( String cname ) {
+		return cname.charAt( 0 ) +File.separator+ cname;
+	}
+	// concepts are read in a tree
+	public  static String dictionary(     String name ) {return ro(DICT)+ name +ENTRY_EXT;}
 	private static String writtenName(    String name ) {return ro(RPTS)+ name +TEXT_EXT;}
 	private static String writtenRepName( String name ) {return ro(RPTS)+ name +REPT_EXT;}
 	
@@ -320,7 +325,7 @@ public class Concept {
 			for (String file : cmds)
 				Autoload.unloadNamed( file );
 			
-		else if (cmd.equals( "count" ))
+		else if (cmd.equals( "exists" ))
 			// concept count "i can say"
 			rc = cmds.isEmpty() || match( new Strings( cmds.remove( 0 )) ).isEmpty()
 					? Response.no() : Response.yes();

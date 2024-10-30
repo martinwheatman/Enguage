@@ -1,5 +1,5 @@
 On "do you understand PHRASE-X":
-	perform "concept count X";
+	perform "concept exists X";
 	if not, reply "no, i do not understand";
 	reply "yes, i understand".
 	

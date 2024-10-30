@@ -5,11 +5,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.enguage.util.strings.Strings;
+
 public class Assets {
 	private Assets() {}
 	
-	public  static final String     NAME = "assets";
-	
+	public  static final String NAME = "assets";
+	public  static final int      ID = 20901783; //Strings.hash( NAME );
+		
 	private static Object    context = null; // if null, not on Android
 	public  static Object    context() {return context;}
 	public  static void      context( Object   activity ) {context = activity;}
@@ -29,4 +32,7 @@ public class Assets {
 		String[] names = null;
 		names = new File( path ).list();
 		return names;
+	}
+	public static Strings perform( Strings args ) {
+		return new Strings( "Sorry, nothing to see here" );
 }	}
