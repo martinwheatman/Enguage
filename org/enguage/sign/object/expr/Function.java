@@ -114,7 +114,8 @@ public class Function {
 			else
 				audit.error( "Unknown "+ NAME +".interpret() command: "+ cmd );
 		}
-		return rc; //(Strings) audit.out( rc );
+		//audit.out( rc );
+		return rc;
 	}
 	// === test code below! ===
 	private static void testCreate( String fn, String formals, String body ) {
@@ -134,7 +135,7 @@ public class Function {
 		Overlay.set( Overlay.get());
 		Overlay.attach( NAME );
 		
-		Response.dnk( "I do not know\n" );
+		Response.Type.DNU.value( "I do not know\n" );
 		testQuery(  "sum", "1 , 1" ); // error!
 		
 		testCreate( "sum", "a and b", "a + b" );

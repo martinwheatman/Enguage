@@ -57,10 +57,10 @@ public class Link {
 	}
 	static public Strings perform( Strings args ) {
 		audit.in( "interpret", "["+ args.toString( Strings.CSV ) +"]" ); 
-		String rc = Response.notOkay().toString();
+		Strings rc = Response.notOkay();
 		int argc = args.size();
 		if (argc >= 3 || argc <= 5) {
-			rc = Response.okay().toString();
+			rc = Response.okay();
 			String	cmd    = args.remove( 0 ),
 					entity = args.remove( 0 ),
 					attr   = args.remove( 0 ),
@@ -73,15 +73,15 @@ public class Link {
 			if (Attribute.isAttribute( target )) target = new Attribute( target ).value();
 					
 			if (cmd.equals("set") || cmd.equals( "create" ))
-				rc = new Value( entity, attr+EXT ).set( target ) ? Response.okay().toString() : Response.notOkay().toString();
+				rc = new Value( entity, attr+EXT ).set( target ) ? Response.okay() : Response.notOkay();
 				
 			else if (cmd.equals("get"))
-				rc = new Value( entity, attr+EXT ).get();
+				rc = new Strings( new Value( entity, attr+EXT ).get());
 				
 			else if (cmd.equals("exists"))
 				rc = (target.equals( "" ) ?
 						new Value( entity, attr+EXT ).exists() ? Response.yes() : Response.no()
-						: exists( entity, attr+EXT, target ) ? Response.yes() : Response.no()).toString();
+						: exists( entity, attr+EXT, target ) ? Response.yes() : Response.no());
 				
 			else if (cmd.equals("delete"))
 				if (target.equals( "" ))
@@ -89,16 +89,16 @@ public class Link {
 				else if (exists( entity, attr+EXT, target ))
 					new Value( entity, attr+EXT ).ignore();
 				else
-					rc =  Response.notOkay().toString();
+					rc =  Response.notOkay();
 				
 			else if (cmd.equals("attribute"))
-				rc = attribute( entity, attr, target, value ) ? Response.okay().toString() : Response.notOkay().toString();
+				rc = attribute( entity, attr, target, value ) ? Response.okay(): Response.notOkay();
 			
 			else
 				usage( "cmd="+ cmd +", ent="+ entity +", attr="+ attr +", [ "+ args +" ]" );
 		} else
 			usage( args );
-		return audit.out( new Strings( rc ));
+		return audit.out( rc );
 	}
 	private static Strings test( String cmd, String expected ) {
 		Strings reply = perform( new Strings( cmd ).contract( "/" ));

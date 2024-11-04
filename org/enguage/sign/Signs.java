@@ -202,7 +202,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 					
 					// if reply is DNU, this meaning is not appropriate!
 					audit.debug( "Signs.interpretation() returned "+ r.type() );
-					if (r.type() != Response.Type.E_DNU)
+					if (r.type() != Response.Type.DNU)
 						done = true;
 			}	}
 		}

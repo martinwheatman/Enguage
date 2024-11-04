@@ -1,3 +1,4 @@
-martin is the best: sorry, martin is not a person.
-martin is a person: ok, martin is a person.
-martin is the best: ok, dokey.
+## This test requires the spoken sign introducing in UnitTest, now removed.
+##martin is the best: sorry, martin is not a person.
+##martin is a person: ok, martin is a person.
+##martin is the best: ok, dokey.

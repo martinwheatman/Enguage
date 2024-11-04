@@ -47,6 +47,7 @@ public class Number {
 	static public  final String NOT_A_NUMBER = "not a number";
 	static public  final String         MORE = "more";
 	static public  final String        FEWER = "less";
+	static public  final String      ANOTHER = "another";
 	
 	// ===== getNumber(): a Number representamen Factory
 	static private final Strings        All = new Strings(             "all" );
@@ -198,7 +199,22 @@ public class Number {
 		//return audit.out( rc );
 		return new Strings().append( rc );
 	}
-
+	public static Float value( String s ) {
+		if (s.equalsIgnoreCase(   "zero" )) return  0f;
+		if (s.equalsIgnoreCase(    "one" )) return  1f;
+		if (s.equalsIgnoreCase(    "two" )) return  2f;
+		if (s.equalsIgnoreCase(  "three" )) return  3f;
+		if (s.equalsIgnoreCase(   "four" )) return  4f;
+		if (s.equalsIgnoreCase(   "five" )) return  5f;
+		if (s.equalsIgnoreCase(    "six" )) return  6f;
+		if (s.equalsIgnoreCase(  "seven" )) return  7f;
+		if (s.equalsIgnoreCase(  "eight" )) return  8f;
+		if (s.equalsIgnoreCase(   "nine" )) return  9f;
+		if (s.equalsIgnoreCase(    "ten" )) return 10f;
+		if (s.equalsIgnoreCase( "eleven" )) return 11f;
+		if (s.equalsIgnoreCase( "twelve" )) return 12f;
+		return Float.NaN;
+	}
 	private void appendPostOp( ListIterator<String> si ) {
 		int oplen, x=0;
 		String power = "";
@@ -351,12 +367,13 @@ public class Number {
 		//audit.in( "doAnother", Strings.peek( si ));
 		boolean rc = false;
 		if (si.hasNext())
-			if (rc = si.next().equals( "another" )) {
+			if (rc = si.next().equals( ANOTHER )) {
+				audit.debug( "found "+ ANOTHER );
 				isRelative( true );  // need to set rel before magnitude!
 				isAscending( true );
 				isExact( true );
 				magnitude( 1.0f );
-				append( "another" );
+				append( ANOTHER );
 			} else
 				si.previous();
 		//return audit.out( rc );
@@ -368,11 +385,11 @@ public class Number {
 		if (si.hasNext()) {
 			String token = si.next();
 			if (token.equals( MORE )) {
-				audit.debug( "found more" );
+				audit.debug( "found "+ MORE );
 				isRelative( true ).isAscending(  true );
 				append( MORE );
 			} else if (token.equals( FEWER )) {
-				audit.debug( "found less" );
+				audit.debug( "found "+ FEWER );
 				isRelative( true ).isAscending( false );
 				append( FEWER );
 			} else

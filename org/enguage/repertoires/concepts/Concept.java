@@ -331,7 +331,7 @@ public class Concept {
 					? Response.no() : Response.yes();
 			
 		else
-			rc = Response.notOkay();
+			rc = Response.notOkay( "i don't understand "+ cmd );
 		
 		return rc;
 }	}

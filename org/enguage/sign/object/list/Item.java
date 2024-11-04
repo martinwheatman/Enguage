@@ -288,21 +288,21 @@ public class Item {
 	// ------------------------------------------------------------------------
 	public static Strings perform( Strings cmds ) {
 		audit.in( "interpret", "cmds="+ cmds );
-		String rc = Response.notOkay().toString();
+		Strings rc = Response.notOkay();
 		if (!cmds.isEmpty()) {
 			
-			rc = Response.okay().toString();
+			rc = Response.okay();
 			String one = cmds.remove( 0 );
 			
 			if (one.equals( "ungroup" ))
 				if (cmds.isEmpty())
 					groupOn( "" );
 				else
-					rc = Response.notOkay().toString();
+					rc = Response.notOkay();
 
 			else if (one.equals( "groupby" ))
 				if (cmds.isEmpty())
-					rc = Response.notOkay().toString();
+					rc = Response.notOkay();
 				else
 					groupOn( ""+cmds );
 					
@@ -324,12 +324,12 @@ public class Item {
 					stuffIs( new Strings( Strings.stripQuotes( thr )));
 					
 				else
-					rc = Response.notOkay().toString();
+					rc = Response.notOkay();
 			} else
-				rc = Response.notOkay().toString();
+				rc = Response.notOkay();
 		}
 		audit.out( rc );
-		return new Strings( rc );
+		return rc;
 	}
 	//
 	// --- test code ---

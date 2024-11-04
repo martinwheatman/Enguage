@@ -7,11 +7,7 @@ import java.util.Scanner;
 
 import org.enguage.Enguage;
 import org.enguage.repertoires.concepts.Concept;
-import org.enguage.sign.Sign;
-import org.enguage.sign.factory.Spoken;
-import org.enguage.sign.factory.Written;
 import org.enguage.sign.object.sofa.Overlay;
-import org.enguage.sign.object.sofa.Value;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
@@ -66,14 +62,13 @@ public class UnitTest {
 			if (expected == null || new Strings(reply).equals( new Strings( expected )))
 				Audit.passed( REPLY_PROMPT+ reply +"." );// 1st success
 				
-			else if (unexpected == null) {              // no second chance
-				// Repertoires.signs().show();
+			else if (unexpected == null)                 // no second chance
 				audit.FATAL(
 					"reply: '"+    reply    +"',\n              "+
 					"expected: '"+ expected +"' "
 				);
 		
-			} else if (new Strings(reply).equals( new Strings( unexpected )))
+			else if (new Strings(reply).equals( new Strings( unexpected )))
 				Audit.passed( REPLY_PROMPT+ reply +".\n" );
 			
 			else                                        // second chance failed too!
@@ -192,26 +187,6 @@ public class UnitTest {
 		doTheseUnitTests( unitTests );
 	}
 		
-	private static void createVoicedSign() {
-		// create a sign in overlay space
-		audit.in("createVoicedSign", "");
-		Fs.root( UT_LOCATION );
-		Overlay.attach("uid");
-		
-		// a pre-configured sign for the overlay.txt
-		String string = "On \"SOMEONE is the PHRASE-SOMETHING\":\n" +
-				"\tis SOMEONE a person;\n" +
-				"\tif not, reply \"sorry , SOMEONE is not a person\";\n" +
-				"\tperform \"variable set martin best\";\n" +
-				"\treply \"ok , dokey\".";
-
-		// create a sign and save it (as a value)
-		Sign sign = new Written( string ).toSign();
-		new Value( Spoken.CONCEPTS, sign.pattern().toFilename() )
-				.set( sign.toString() );
-		audit.out();
-	}
-	
 	public static void main( String[] args ) {
 		
 		Strings    cmds = new Strings( args );
@@ -220,7 +195,6 @@ public class UnitTest {
 		// The overlay test shows that predefined signs are 
 		// loaded on startup: a sign is written into a blank
 		// overlay space, and is read in the normal way :-/
-		createVoicedSign();
 					
 		Enguage.set( new Enguage( fsys ));
 				

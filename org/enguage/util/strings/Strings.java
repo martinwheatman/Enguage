@@ -294,7 +294,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 		try {
 			return Float.parseFloat( s );
 		} catch (NumberFormatException nfe) {
-			return Float.NaN;
+			// this will return Float.NaN is not successful 
+			return org.enguage.sign.symbol.number.Number.value( s );
 	}	}
 
 	public int peekwals( ListIterator<String> si ) {

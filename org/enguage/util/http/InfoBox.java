@@ -5,6 +5,7 @@ import java.util.ListIterator;
 import org.enguage.repertoires.Repertoires;
 import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.sign.factory.Written;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.symbol.when.Date;
 import org.enguage.sign.symbol.where.Address;
 import org.enguage.util.attr.Attribute;
@@ -78,7 +79,7 @@ public class InfoBox {
 		// Obtain the named value - split into sub-values
 		String value = attrs.match( name );
 		if (value.equals(""))
-			rc = new Strings("sorry, "+ topic() +" does not have a '"+ name +"' attribute" );
+			rc = Response.notOkay( topic() +" does not have a '"+ name +"' attribute" );
 		
 		else {
 			//Audit.log( "Value is >"+ value +"<" );
@@ -176,7 +177,7 @@ public class InfoBox {
 				Attributes headerAttrs = listHeaderAttributes( header, attrs );
 				
 				if (headerAttrs.isEmpty())
-					rc = new Strings( "sorry, the "+ header +" is not a header" );
+					rc = Response.notOkay( "the "+ header +" is not a header" );
 				else {
 					ListIterator<Attribute> ai = headerAttrs.listIterator();
 					while (ai.hasNext()) {
@@ -212,7 +213,7 @@ public class InfoBox {
 			
 			Audit.log( "args: ["+ args.toString( Strings.DQCSV ) +"]" );
 			if (args.size() != 2 ) 
-				rc = new Strings("Sorry, exists method needs two parameters, got: "+ args );
+				rc = Response.notOkay( "exists method needs two parameters, got: "+ args );
 			else {
 				Strings name  = new Strings( args.get( 0 ));
 				Strings value = new Strings( args.get( 1 ));
@@ -253,7 +254,7 @@ public class InfoBox {
 						+ headerAttrs.get( 0 ).value()
 				);
 			else
-				rc = new Strings( "sorry, there is more than one header value" );
+				rc = Response.notOkay( "there is more than one header value" );
 		}
 		
 		audit.out( rc );

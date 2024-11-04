@@ -67,8 +67,8 @@ public class Intentions extends ArrayList<Intention> {
 				return false;
 		return true;
 	}
-	public String toSpokenList() {
-		StringBuilder sb = new StringBuilder();
+	public Strings toSpokenList() {
+		Strings sb = new Strings();
 		if (this.isEmpty()) {
 			sb.append( "nothing" );
 		} else {
@@ -84,16 +84,16 @@ public class Intentions extends ArrayList<Intention> {
 				}
 				sb.append( sep );
 				// "SOMETHING" -> "that something"
-				for (String s : new Strings( str )) // English-isms
+				for (String s : new Strings( str )) { // English-isms
 					if (allUpperCase( s ) && !s.equals("A") && !s.equals("I")) // I is ok
-						sb.append( " that "+ s.toLowerCase() );
-					else
-						sb.append( " "+ s.toLowerCase() );
+						sb.append( "that" );
+					sb.append( s.toLowerCase() );
+				}
 
 				sep = in.sep( line==0 );
 				line = sep.equals( Intention.ELSE_SEP ) ? 0 : ++line;
 		}	}
-		return sb.toString();
+		return sb;
 	}
 	
 	// ------------------------------------------------------------------------

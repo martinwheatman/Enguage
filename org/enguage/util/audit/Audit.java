@@ -18,6 +18,11 @@ public class Audit {
 	public  static  void    on() {auditOn = true;}
 	public  static  boolean isOn() {return auditOn;}
 	
+	private boolean tracing = false; // per object
+	public  Audit   tracing( boolean on ) {tracing=on; return this;}
+	private boolean debugging = false; // per object
+	public  Audit   debugging( boolean on ) {debugging=on; return this;}
+
     // === indent
  	private static  Indentation indent = new Indentation();
  	public  static  void   incr() {indent.incr();}
@@ -28,11 +33,6 @@ public class Audit {
 	private static void    showSignsOnFatal() {showSignsOnFatal=true;}
 	private static void    hideSignsOnFatal() {showSignsOnFatal=false;}
 	
-	private boolean tracing = false; // per object
-	public  Audit   tracing( boolean on ) {tracing=on; return this;}
-	private boolean debugging = false; // per object
-	public  Audit   debugging( boolean on ) {debugging=on; return this;}
-
 	public Audit( String nm ) {className = Character.toUpperCase( nm.charAt(0)) + nm.substring(1);}
 	
 	private              String   className = "";
@@ -134,7 +134,8 @@ public class Audit {
 	public boolean OUT( boolean b ) {OUT( Boolean.toString( b )); return b;}
 	
 	public static Strings perform(Strings cmds) {
-		audit.in( "Interpret", ""+ cmds );
+		audit.in( "perform", ""+ cmds );
+		
 		Strings rc = Response.okay();
 		String cmd = cmds.remove( 0 );
 		
@@ -181,7 +182,7 @@ public class Audit {
 				rc = Response.notOkay();
 		}			
 
-		return audit.out(rc);
+		return audit.out( rc) ;
 	}
 	
 	// === title/underline

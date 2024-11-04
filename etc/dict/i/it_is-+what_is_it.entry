@@ -1,0 +1,16 @@
+## This is a simple concept of remembering something is 'it'.
+##
+
+On "it is PHRASE-IT":
+	set it to IT;
+	reply "ok, it is IT".
+	
+On "what is it":
+	is it set;
+	if not, reply "sorry, i do not know";
+	get the value of it;
+	reply "it is ...".
+	
+#] What is it      : sorry, i don't know.
+#] it is the light : ok, it is the light.
+#] What is it      : it is the light.

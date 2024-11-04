@@ -7,58 +7,72 @@ import org.enguage.util.strings.Strings;
 public class Response {
 
 	public enum Type {
-		E_DNU, // DO NOT UNDERSTAND
-		E_UDU, // user does not understand
-		E_DNK, // NOT KNOWN -- init
-		E_SOZ, // SORRY -- -ve
-		E_NO,  // FALSE -- -ve
-		E_OK,  // TRUE  -- +ve identical to 'yes'
-		E_YES, // TRUE  -- +ve identical to 'yes'
-		E_CHS; // narrative verdict - meh!
+		DNU( "DNU"   ), // DO NOT UNDERSTAND
+		UDU( "UDU"   ), // user does not understand
+		DNK( "DNK"   ), // NOT KNOWN -- init
+		SOZ( "sorry" ), // SORRY -- -ve
+		NO(  "no"    ), // FALSE -- -ve
+		OK(  "ok"    ), // TRUE  -- +ve identical to 'yes'
+		YES( "yes"   ), // TRUE  -- +ve identical to 'yes'
+		CHS( "chs"   ); // narrative verdict - meh!
+		
+		private Strings value;
+		public  void    value( String s ) {value = new Strings( s.toLowerCase( Locale.getDefault() ));}
+		public  Strings value() {return value;}
+		
+		private Type( String s ) {value = new Strings( s );}
 	}
 	
 	public static final boolean isFelicitous( Response.Type type ) {
-		return  Response.Type.E_YES == type ||
-				Response.Type.E_OK  == type ||
-				Response.Type.E_CHS == type;
+		return  Response.Type.YES == type ||
+				Response.Type.OK  == type ||
+				Response.Type.CHS == type;
 	}
 
 	public static final Type typeFromStrings( Strings uttr ) {
-		     if (uttr.begins( yes()     )) return Type.E_YES;
-		else if (uttr.begins( okay()    )) return Type.E_OK;
-		else if (uttr.begins( notOkay() )) return Type.E_SOZ;
-		else if (uttr.begins( dnu()     )) return Type.E_DNU;
-		else if (uttr.begins( udu()     )) return Type.E_UDU;
-		else if (uttr.begins( no()      )) return Type.E_NO;
-		else if (uttr.begins( dnk()     )) return Type.E_DNK;
-		else return Type.E_CHS;
+		     if (uttr.begins( yes()     )) return Type.YES;
+		else if (uttr.begins( okay()    )) return Type.OK;
+		else if (uttr.begins( notOkay() )) return Type.SOZ;
+		else if (uttr.begins( dnu()     )) return Type.DNU; // sorry, i don't think...
+		else if (uttr.begins( udu()     )) return Type.UDU;
+		else if (uttr.begins( no()      )) return Type.NO;
+		else if (uttr.begins( dnk()     )) return Type.DNK;
+		else return Type.CHS;
 	}
 
-	private static Strings okay    = new Strings( "ok" );
-	public  static void    okay( String s ) {okay = new Strings( s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings okay() {return okay;}
+	private static Strings build( Type t, String s ) {
+		Strings rc = new Strings( t.value() );
+		rc.add( "," );
+		for (String str : new Strings( s.toLowerCase( Locale.getDefault() )))
+			rc. add( str );
+		return rc;
+	}
+	private static Strings build( Type t, Strings s ) {
+		Strings rc = new Strings( t.value() );
+		rc.add( "," );
+		for (String str : s )
+			rc. add( str );
+		return rc;
+	}
 
-	private static Strings notOkay = new Strings( "sorry" );
-	public  static void    notOkay( String s ) {notOkay = new Strings( s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings notOkay() {return notOkay;}
+	public  static Strings okay() {return Type.OK.value();}
+	public  static Strings okay( String s ) {return build( Type.OK, s );}
+
+	public  static Strings notOkay() {return Type.SOZ.value();}
+	public  static Strings notOkay( String s ) {return build( Type.SOZ, s );}
 	
-	private static Strings dnk = new Strings( "DNK" );
-	public  static void    dnk( String s ) {dnk = new Strings( s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings dnk() {return dnk;}
+	public  static Strings dnk() {return Type.DNK.value();}
+	public  static Strings dnk( String s ) {return build( Type.DNK, s );}
 	
-	private static Strings no = new Strings( "no" );
-	public  static void    no(  String s ) {no = new Strings( s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings no() {return no;}
+	public  static Strings no() {return Type.NO.value();}
+	public  static Strings no(  String s ) {return build( Type.NO,  s );}
 	
-	private static Strings yes    = new Strings( "yes" );
-	public  static void    yes( String s ) {yes = new Strings( s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings yes() {return yes;}
+	public  static Strings yes() {return Type.YES.value();}
+	public  static Strings yes( String s ) {return build( Type.YES, s );}
 	
-	private static Strings dnu = new Strings( "DNU" );
-	public  static void    dnu( String s ) {dnu = new Strings( s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings dnu(){return dnu;}
+	public  static Strings dnu(){return Type.DNU.value();}
+	public  static Strings dnu( String s ) {return build( Type.SOZ, build( Type.DNU, s ));}
 	
-	private static Strings udu = new Strings( "UDU" );
-	public  static void    udu( String s ) {udu = new Strings( s.toLowerCase( Locale.getDefault() ));}
-	public  static Strings udu() {return udu;}
+	public  static Strings udu() {return Type.UDU.value();}
+	public  static Strings udu( String s ) {return build( Type.UDU, s );}
 }

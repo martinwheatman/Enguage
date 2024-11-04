@@ -45,7 +45,7 @@ public class Commands {
 	 	 * A zero result is success.
 	 	 * Passing back a non-zero result is a failure.
 	 	 */
-	 	r.type( rc == 0 ? Response.Type.E_OK : Response.Type.E_SOZ );
+	 	r.type( rc == 0 ? Response.Type.OK : Response.Type.SOZ );
 	 	r.format( rc == 0 ? "ok, ..." : "sorry, ..." );
 		
 		//audit.out( "run result: "+ r )
@@ -121,9 +121,6 @@ public class Commands {
 
 	// ---
 	public static void main( String[] args) {
-		Response.notOkay( "sorry" );
-		Response.okay( "ok" );
-
 		Audit.resume();
 		audit.tracing( true );
 		audit.debugging( true );

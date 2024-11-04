@@ -29,7 +29,7 @@ public class Reply {
 	public  Reply   doneIs( boolean b ) {done = b; return this;}
 	public  boolean isDone() {return done;}
 	
-	private Response.Type  type = Response.Type.E_DNU;
+	private Response.Type  type = Response.Type.DNU;
 	public  Response.Type  type() {return type;}
 	public  Reply          type( Response.Type t ) {type = t; return this;}
 	
@@ -87,12 +87,12 @@ public class Reply {
 		format( new Strings( Response.dnu() + ", ..." ));
 		answer( thought.toString() );
 		// must come after answer()
-		type( Response.Type.E_SOZ );
+		type( Response.Type.SOZ );
 		verbatimIs( false );
 	}
 	public void toIdk() {
 		format( Response.dnk());
-		type( Response.Type.E_DNK );
+		type( Response.Type.DNK );
 		answer( NO_ANSWER ); // reset
 	}
 	
@@ -116,7 +116,7 @@ public class Reply {
 	}
 	public Strings sayThis() {
 		Strings reply = replyToStrings();
-		if (Utterance.understoodIs( type() != Response.Type.E_DNU )) {
+		if (Utterance.understoodIs( type() != Response.Type.DNU )) {
 			// used in disambiguation ordering :/
 			if (!repeated())
 				previous( reply ); // never used
@@ -149,7 +149,7 @@ public class Reply {
 		else {// reply "I don't understand" is like an exception?
 			format( v );
 			type( Response.typeFromStrings( v ));
-			doneIs( type() != Response.Type.E_DNU );
+			doneIs( type() != Response.Type.DNU );
 		}
 		
 		audit.out( toString() );

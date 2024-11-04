@@ -48,9 +48,7 @@ On "this is temporal", perform "sign temporal".
 #]	martin is the best : ok, dokey.
 
 ## what does martin is a person imply: ok.
-## save this   : ok.
-## forget this : ok.
-## delete this : ok.
-
-#delete the concept OTF.                      # language/delete_the_concept-.txt
-#show this sign : sorry, nothing to see here. # audit/show.txt
+## save this      : ok.
+#] delete the latest concept: ok, it has been deleted.
+#] show signs     : ok.
+#] show this sign : sorry, nothing to see here.

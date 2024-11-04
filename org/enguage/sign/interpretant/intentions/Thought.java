@@ -23,7 +23,7 @@ public class Thought {
 		// think it...
 		Reply r = Repertoires.mediate( new Utterance( thought ));
 
-		if (Response.Type.E_DNU == r.type()) {
+		if (Response.Type.DNU == r.type()) {
 			// put this into reply via Reply.strangeThought()
 			audit.debug( "Strange thought: I don't understand: '"+ thought +"'" );
 			
@@ -32,7 +32,7 @@ public class Thought {
 		}
 		
 		r.doneIs(
-				r.type() == Response.Type.E_SOZ   &&
+				r.type() == Response.Type.SOZ   &&
 				Strings.isUCwHyphUs( values.toString() ) // critical!
 		);
 		

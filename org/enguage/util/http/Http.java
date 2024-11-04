@@ -88,7 +88,7 @@ public class Http implements AutoCloseable {
 			String cacheName = cache + title +"."+ source();
 			
 			if (new File( cacheName ).exists()) {
-				rc = new Strings().append( "\""+ cacheName +"\"" );
+				rc = new Strings( "\""+ cacheName +"\"" );
 				audit.debug( "Found: "+ rc );
 
 			} else {
@@ -100,7 +100,7 @@ public class Http implements AutoCloseable {
 								cacheName,
 								http.response()
 						);
-						rc = new Strings().append( "\""+ cacheName +"\"" );
+						rc = new Strings( "\""+ cacheName +"\"" );
 					}
 					
 				} catch (IOException e) {
@@ -109,30 +109,30 @@ public class Http implements AutoCloseable {
 		}	}
 		audit.out( rc.toString() );
 		return rc;
-	}
-	// ************************************************************************
-	// Test code...
-	//
-	public static void main(String[] args) {
-		// default url -- SAP graph
-		String defaultUrl = "http://localhost:3004/sap.graph/";
-		String defaultQuery = "SalesQuote?$top=2";
-		
-		String query = defaultQuery;
-		if (args.length > 0)
-			query = args[ 0 ];
-		
-		String url = defaultUrl + query;
-		System.out.println( "Trying: "+ url );
-		
-		try (Http http = new Http( url )) {
-			// Get the response code
-			int responseCode = http.responseCode();
-			System.out.println("Response Code: " + responseCode);
-
-			System.out.println("Response: " + http.response() );
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//	}
+//	// ************************************************************************
+//	// Test code...
+//	//
+//	public static void main(String[] args) {
+//		// default url -- SAP graph
+//		String defaultUrl = "http://localhost:3004/sap.graph/";
+//		String defaultQuery = "SalesQuote?$top=2";
+//		
+//		String query = defaultQuery;
+//		if (args.length > 0)
+//			query = args[ 0 ];
+//		
+//		String url = defaultUrl + query;
+//		System.out.println( "Trying: "+ url );
+//		
+//		try (Http http = new Http( url )) {
+//			// Get the response code
+//			int responseCode = http.responseCode();
+//			System.out.println("Response Code: " + responseCode);
+//
+//			System.out.println("Response: " + http.response() );
+//			
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 }	}

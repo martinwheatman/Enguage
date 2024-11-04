@@ -45,7 +45,7 @@ public class Repertoires {
 		u = new Utterance( u.expanded() );
 		
 		Reply r = signs.mediate( u );
-		if (Response.Type.E_DNU == r.type())
+		if (Response.Type.DNU == r.type())
 			r = engine().mediate( u );
 	
 		audit.out( r );
@@ -78,7 +78,7 @@ public class Repertoires {
 					rc = Response.notOkay();
 				
 			} else if (cmd.equals( "variable" )) {
-				Variable.perform( new Strings( "show" ));
+				rc = Variable.perform( new Strings( "show" ));
 				
 			} else if (cmd.equals( "list" )) {
 				//Strings reps = Enguage.e.signs.toIdList()
@@ -87,8 +87,7 @@ public class Repertoires {
 				 * May want to ask "is there a repertoire for needs" ?
 				 */
 				rc = new Strings( "loaded repertoires include "+ new Strings( (TreeSet<String>)Concept.loaded()).toString( Config.andListFormat() ));
-			}
-		}
+		}	}
 		audit.out();
 		return rc;
 }	}

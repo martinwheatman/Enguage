@@ -191,18 +191,18 @@ public class Variable {
 	}
 	
 	public  static Strings perform( Strings args ) {
-		audit.in( "interpret", args.toString() );
-		String  rc = Response.okay().toString();
+		audit.in( "perform", args.toString() );
+		Strings  rc = Response.okay();
 		String cmd = args.remove( 0 );
 		int sz = args.size();
 		if (sz > 0) {
 			String name = args.remove( 0 );
 			if (sz > 1)
 				if (cmd.equals( "set" ))
-					rc = set( name, args.toString() );
+					rc = new Strings( set( name, args.toString() ));
 
 				else if (cmd.equals( "equals" ))
-					rc = isSet( name, args.toString()) ? Response.okay().toString() : Response.notOkay().toString();
+					rc = isSet( name, args.toString()) ? Response.okay() : Response.notOkay();
 			
 				else if (cmd.equals( "exception" )) {
 					
@@ -212,29 +212,29 @@ public class Variable {
 					else if (direction.equals( "remove" ))
 						exceptionRemove( args );
 					else
-						rc = Response.notOkay().toString();
+						rc = Response.notOkay();
 				} else
-					rc = Response.notOkay().toString();
+					rc = Response.notOkay();
 				
 			else { // sz == 1, name and no params
 				if (cmd.equals( "exists" ))
-					rc = isSet( name, null ) ? Response.okay().toString() : Response.notOkay().toString();
+					rc = isSet( name, null ) ? Response.okay() : Response.notOkay();
 				else if (cmd.equals( "unset" ))
 					unset( name );
 				else if (cmd.equals( "get" ))
-					rc = get( name.toUpperCase( Locale.getDefault() ));
+					rc = new Strings( get( name.toUpperCase( Locale.getDefault() )));
 				else
-					rc = Response.notOkay().toString();
+					rc = Response.notOkay();
 			}
 		} else if (cmd.equals( "show" )) {
 			audit.debug( "printing cache" );
 			printCache();
 			audit.debug( "printed" );
 		} else
-			rc = Response.notOkay().toString();
-		rc = rc==null?"":rc;
+			rc = Response.notOkay();
+		rc = rc==null?new Strings(""):rc;
 		audit.out( rc );
-		return new Strings( rc );
+		return rc;
 	}
 	
 	// --

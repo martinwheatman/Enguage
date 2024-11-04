@@ -114,10 +114,10 @@ public class Where {
 
 	public  static Strings perform( Strings args ) {
 		//audit.in( "interpret", args.toString() )
-		String rc = Perform.S_IGNORE;
+		Strings rc = new Strings( Perform.S_IGNORE );
 		if (!args.isEmpty()) {
 			String cmd = args.remove( 0 );
-			rc = Response.okay().toString();
+			rc = Response.okay();
 			if (cmd.equals( "add" ))
 				addConcepts( args );
 			else if (cmd.equals( "addCurrent" ))
@@ -125,10 +125,10 @@ public class Where {
 			else if (cmd.equals( "locator" ))
 				locatorIs( Attribute.value( args ));
 			else
-				rc = Response.notOkay().toString();
+				rc = Response.notOkay();
 		}
 		//audit.out( rc )
-		return new Strings( rc );
+		return rc;
 	}
 
 	public  static void doLocators( String locators ) {

@@ -34,9 +34,9 @@ public class Transitive {
 
 	public static Strings perform( Strings args ) {
 		audit.in( "interpret", args.toString() );
-		String rc = Perform.S_IGNORE;
+		Strings rc = new Strings( Perform.S_IGNORE );
 		if (args.size() > 1) {
-			rc = Response.notOkay().toString();
+			rc = Response.notOkay();
 			String cmd = args.remove( 0 );
 			if (cmd.equals( "add" )) {
 				int sz = args.size();
@@ -47,9 +47,9 @@ public class Transitive {
 				}
 				if (sz == 1)
 					addConcepts( args );
-				rc = Response.okay().toString();
+				rc = Response.okay();
 		}	}
-		return audit.out( new Strings( rc ));
+		return audit.out( rc );
 	}
 	public static void main( String[] args ) {
 		audit.debug( perform( new Strings( "add cause" )));

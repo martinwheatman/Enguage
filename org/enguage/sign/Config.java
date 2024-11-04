@@ -46,19 +46,19 @@ public class Config {
 		else if (name.equals( "CLASSPATH" )) Commands.classpath( value );
 		else if (name.equals( "CONDPOS" )) Intention.soPrefix( value );
 		else if (name.equals( "CONDNEG" )) Intention.noPrefix( value );
-		else if (name.equals( "SUCCESS" )) Response.okay( value );
-		else if (name.equals( "FAILURE" )) Response.notOkay( value );
+		else if (name.equals( "SUCCESS" )) Response.Type.OK.value( value );
+		else if (name.equals( "FAILURE" )) Response.Type.SOZ.value( value );
 		else if (name.equals(  "ANSWER" )) placeholder( new Strings( value ));
 		else if (name.equals(   "SHELL" )) Commands.shell( value );
 		else if (name.equals(   "TERMS" )) Terminator.terminators( new Strings( value ));
 		else if (name.equals(    "SOFA" )) Commands.java( value );
 		else if (name.equals(     "URL" )) Http.url( value );
 		else if (name.equals(     "TTL" )) Autoload.ttl( value );
-		else if (name.equals(     "DNU" )) Response.dnu( value );
-		else if (name.equals(     "DNK" )) Response.dnk( value );
-		else if (name.equals(     "UDU" )) Response.udu( value );
-		else if (name.equals(     "YES" )) Response.yes( value );
-		else if (name.equals(      "NO" )) Response.no(  value );
+		else if (name.equals(     "DNU" )) Response.Type.DNU.value( value );
+		else if (name.equals(     "DNK" )) Response.Type.DNK.value( value );
+		else if (name.equals(     "UDU" )) Response.Type.UDU.value( value );
+		else if (name.equals(     "YES" )) Response.Type.YES.value( value );
+		else if (name.equals(      "NO" )) Response.Type.NO.value(  value );
 		else
 			return false;
 		return true;

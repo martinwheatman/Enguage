@@ -3,5 +3,5 @@ On "show this sign", perform "sign show".
 	
 On "show engine", perform "repertoires show engine".
 
-On "audit show signs", perform "audit show signs".
-On "audit hide signs", perform "audit hide signs".
+On "show signs on fatal", perform "audit show signs".
+On "hide signs"         , perform "audit hide signs".

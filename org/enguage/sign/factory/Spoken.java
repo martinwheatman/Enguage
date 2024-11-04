@@ -215,21 +215,21 @@ public class Spoken {
 			// write out here
 			saveVoicedAsValue();
 	}	}
-	private static String doShow() {
+	private static Strings doShow() {
 		if (voiced != null) {
 			voiced = rereadVoiceFromValue();
 			// w/o Audit indents!
 			Audit.log( voiced.toString( false ));
 		} else
-			return Response.notOkay().toString() + ", nothing to see here";
-		return Response.okay().toString();
+			return Response.notOkay( "nothing to see here" );
+		return Response.okay();
 	}
-	private static String doList() {
+	private static Strings doList() {
 		if (voiced != null) {
 			voiced = rereadVoiceFromValue();
 			return voiced.intentions().toSpokenList();
 		} else
-			return Response.notOkay().toString() + ", nothing to see here";
+			return Response.notOkay( "nothing to see here" );
 	}
 	
 	private static boolean isElse( String cmd ) {return cmd.equals( "else" );}
@@ -244,11 +244,11 @@ public class Spoken {
 		// It simply takes commands to construct a voiced sign, e.g. create, append etc.
 		// N.B. the 'payload' (e.g. the intention) is passed as a string.
 
-		args=new Strings( args.toString() );
+		args = new Strings( args.toString() );
 		
 		audit.in( "perform", args.toString( Strings.DQCSV ));
 		
-		String      rc = Response.okay().toString();			
+		Strings     rc = Response.okay();			
 		String     cmd = args.remove( 0 );
 		boolean isElse = isElse( cmd );
 		boolean isThen = isThen( cmd );
@@ -293,9 +293,9 @@ public class Spoken {
 			doFinally( args, isThen, isElse );
 			
 		else {
-			rc = Response.notOkay().toString();
+			rc = Response.notOkay();
 			audit.error( "Unknown Sign.interpret() command: "+ cmd );
 		}
 		audit.out( rc );
-		return new Strings( rc ); 
+		return rc; 
 }	}

@@ -1,5 +1,15 @@
 On "light on",  perform "assets light on".
 On "light off", perform "assets light off".
 
-#] light on  : sorry, nothing to see here.
-#] light off : sorry, nothing to see here.
+On "set light to NUMERIC-N",  perform "assets light set N".
+
+On "get light maximum", perform "assets light get maximum".
+On "get light default", perform "assets light get default".
+On "get light   level", perform "assets light get level".
+
+On "turn the lights WAY", light WAY.
+On "turn the light   on", light  on.
+On "turn the light  off", light off.
+
+#] turn the light on  : sorry, nothing to see here.
+#] turn the light off : sorry, nothing to see here.

@@ -79,28 +79,26 @@ public class Entity {
 	
 	public static Strings perform( Strings argv ) {
 		// N.B. argv[ 0 ]="create", argv[ 1 ]="martin wheatman"
-		Strings rc = Response.notOkay();
+		Strings rc = Response.dnu( argv.toString() );
 		if (argv.size() > 1) {
 			String cmd = argv.remove( 0 );
 			String ent = argv.remove( 0 );
-			if (cmd.equals( "create" ))
-				rc = create( ent ) ? Response.okay() : Response.notOkay();
-			else if (cmd.equals( "component" ))
-				rc = createComponent( argv )? Response.okay() : Response.notOkay();
-			else if (cmd.equals( "delete" ))
-				rc = delete( ent ) ? Response.okay() : Response.notOkay();
-			else if (cmd.equals( "exists" ))
-				rc = exists( ent ) ? Response.okay() : Response.notOkay();
-			else if (cmd.equals( "ignore" ))
-				rc = ignore( ent ) ? Response.okay() : Response.notOkay();
-			else if (cmd.equals( "restore" ))
-				rc = restore( ent ) ? Response.okay() : Response.notOkay();
-			else
+			if ( (cmd.equals(    "create" ) &&  create( ent )) ||
+				 (cmd.equals( "component" ) && createComponent( argv )) ||
+				 (cmd.equals(    "delete" ) &&  delete( ent )) ||
+				 (cmd.equals(    "exists" ) &&  exists( ent )) ||
+				 (cmd.equals(    "ignore" ) &&  ignore( ent )) ||
+				 (cmd.equals(   "restore" ) && restore( ent ))    )
+			{
+				rc = Response.okay();
+				
+			} else {
+				rc = Response.notOkay();
 				Audit.log(
 					"Usage: entity [create|exists|ignore|delete] <entityName>\n"+
 					"Given: entity "+ argv.toString( Strings.SPACED )
 				);
-		}
+		}	}
 		return rc;
 	}
 	
