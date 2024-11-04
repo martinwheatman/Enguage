@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.enguage.util.strings.Strings;
+
 public class Assets {
 	private Assets() {}
 	
