@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.util.attr.Attribute;
+import org.enguage.util.attr.Attributes;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
@@ -85,9 +86,51 @@ public class Intentions extends ArrayList<Intention> {
 				sb.append( sep );
 				// "SOMETHING" -> "that something"
 				for (String s : new Strings( str )) { // English-isms
-					if (allUpperCase( s ) && !s.equals("A") && !s.equals("I")) // I is ok
+					if (allUpperCase( s ) && !s.equals("A")
+							&& !s.equals("I") && !s.equals(",")) // I is ok
 						sb.append( "that" );
 					sb.append( s.toLowerCase() );
+				}
+
+				sep = in.sep( line==0 );
+				line = sep.equals( Intention.ELSE_SEP ) ? 0 : ++line;
+		}	}
+		return sb;
+	}
+	
+	public Strings toSpokenList( Attributes matches ) {
+		Strings sb = new Strings();
+		if (this.isEmpty()) {
+			sb.append( "nothing" );
+		} else {
+			Audit.log( ">>>>>matches: "+ matches );
+			int line = 0;
+			String sep = "";
+			for (Intention in : this) {
+				String str = in.toString();
+				if (str.startsWith( Intention.IF_SEP )
+						&& (sep.equals( Intention.THEN_SEP ) ||
+							sep.equals( Intention.THEN_PLUS_PLUS )))
+				{ // X, and, if so Y
+					sep = Intention.AND_SEP;
+				}
+				sb.append( sep );
+				// "SOMETHING" -> "that something"
+				for (String s : new Strings( str )) { // English-isms
+					if (s.equals( "..." ))
+						sb.append( "whatever" );
+					else if (allUpperCase( s ) && !s.equals("A")
+							&& !s.equals("I") && !s.equals(","))
+					{ // I is ok
+						String tmp = matches.deref( s );
+						if (!tmp.equals( s )) {
+							sb.append( tmp );
+						} else {
+							sb.append( s.toLowerCase() );
+						}
+					} else {
+						sb.append( s );
+					}
 				}
 
 				sep = in.sep( line==0 );

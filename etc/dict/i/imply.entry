@@ -8,6 +8,10 @@ On "what does this imply":
 
 On "forget this", perform "sign destroy".
 
+On "what does PHRASE-UTTERANCE imply":
+	perform "repertoire find UTTERANCE";
+	reply "ok, this implies ...".
+
 #] i can say i need something:
 #]                         ok, you can say i need something.
 #] where that something is a phrase:
@@ -23,6 +27,9 @@ On "forget this", perform "sign destroy".
 #]                         ok, reply ok i need that something.
 
 #] what does this imply :
-#]          ok , this implies that something exists in your needs list . And , if so that , reply "i know" . Otherwise , remove that something from your noneed list . Then , add that something to your needs list . And then , reply "ok , i need something".
+#]          ok , this implies that something exists in your needs list . And , if so , reply "i know" . Otherwise , remove that something from your noneed list . Then , add that something to your needs list . And then , reply "ok , i need something".
 
 #] forget this.
+
+
+#] what does i need coffee imply.

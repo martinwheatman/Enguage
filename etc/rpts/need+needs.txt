@@ -57,13 +57,14 @@ On "AND-LIST-SUBJECTS both need PHRASE-THESE":
 
 ###############################################################################
 # Various singular additions
+# The first example uses engine's reply for imply test example
 On "i need PHRASE-THIS":
 	set subject to me;
 	THIS exists in SUBJECT needs list;
 	if so, reply "yes, i know";
 	if not, add THIS to SUBJECT needs list;
 	if not, append THIS onto SUBJECT needs list;
-	reply "ok, you need ... ".
+	reply ok, you need ... .
 
 On "i need NUMERIC-QUANTITY PHRASE-THIS":
 	set subject to me;

@@ -18,6 +18,22 @@ public class Spoken {
 	
 	private Spoken() {}
 	
+	/* 'spoken' => 'sign' (which passes through to here)
+	 * |-----------------------|--------------------|
+	 * | "i can say ..."       | spoken create ...  |
+	 * |-----------------------|--------------------|
+	 * | "where X is a phrase" | spoken split X     |
+	 * |-----------------------|--------------------|
+	 * | "this implies ..."    | spoken imply ...   |
+	 * |-----------------------|--------------------|
+	 * | "then reply ... "     | spoken reply ...   |
+	 * |-----------------------|--------------------|
+	 * | ...                   | think/do/say/...   |
+	 * |-----------------------|--------------------|
+	 * | <anything else>       | reply DNU          |
+	 * |-----------------------|--------------------|
+	 */
+
 	public  static final String   NAME = "spoken";
 	private static final Audit   audit = new Audit( NAME );
 	
@@ -52,13 +68,6 @@ public class Spoken {
 		
 		Repertoires.signs().insert( voiced );
 		return voiced;
-	}
-	
-	public static Strings list() {
-		audit.in( "list", "");
-		Strings files = Overlay.get().list( CONCEPTS );
-		audit.out( files );
-		return files;
 	}
 	
 	public static void loadAll() {

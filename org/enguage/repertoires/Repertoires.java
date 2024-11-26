@@ -5,12 +5,14 @@ import java.util.TreeSet;
 import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Config;
+import org.enguage.sign.Sign;
 import org.enguage.sign.Signs;
 import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.interpretant.intentions.Engine;
 import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.sign.object.Variable;
 import org.enguage.sign.symbol.Utterance;
+import org.enguage.util.attr.Attribute;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 
@@ -52,42 +54,64 @@ public class Repertoires {
 		return r;
 	}
 	
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	private static Strings doShow( Strings cmds ) {
+		Strings rc = Response.okay();
+		
+		String name = cmds.remove( 0 );
+		if (name.equals("signs") ||
+			name.equals("user"))
+			
+			signs.show();
+			
+		else if (name.equals( Engine.NAME ))
+			engine().show();
+			
+		else if (name.equals( "all" )) {
+			engine.show();
+			signs.show();
+			
+		} else
+			rc = Response.notOkay();
+		
+		return rc;
+	}
+	
+	private static Strings doFind( Strings cmds ) {
+		Audit.log( "in find: "+ cmds.toString( Strings.SQCSV ));
+		String utterance = Attribute.getValue( ""+cmds );
+		return signs.find( new Strings( utterance ));
+	}
+	
 	public static Strings perform( Strings cmds ) {
-		audit.in( "perform", "cmds="+ cmds );
 		Strings rc = Response.notOkay();
+		audit.in( "perform", "cmds="+ cmds );
 		if (!cmds.isEmpty()) {
 			String cmd = cmds.remove( 0 );
 			
-			if (cmd.equals("show")) {
-				rc = Response.okay();
+			if (cmd.equals("show"))
+				rc = doShow( cmds );
 				
-				String name = cmds.remove( 0 );
-				if (name.equals("signs") ||
-					name.equals("user"))
-					
-					signs.show();
-					
-				else if (name.equals( Engine.NAME ))
-					engine().show();
-					
-				else if (name.equals( "all" )) {
-					engine.show();
-					signs.show();
-					
-				} else
-					rc = Response.notOkay();
-				
-			} else if (cmd.equals( "variable" )) {
+			else if (cmd.equals( "variable" ))
 				rc = Variable.perform( new Strings( "show" ));
 				
-			} else if (cmd.equals( "list" )) {
-				//Strings reps = Enguage.e.signs.toIdList()
-				/* This becomes less important as the interesting stuff becomes auto loaded 
-				 * Don't want to list all repertoires once the repertoire base begins to grow?
+			else if (cmd.equals( "find" ))
+				rc = doFind( cmds );
+				
+			else if (cmd.equals( "list" ))
+				/* This becomes less important as the interesting stuff 
+				 * becomes auto loaded.  Don't want to list all repertoire
+				 * once the repertoire base begins to grow?
 				 * May want to ask "is there a repertoire for needs" ?
 				 */
-				rc = new Strings( "loaded repertoires include "+ new Strings( (TreeSet<String>)Concept.loaded()).toString( Config.andListFormat() ));
-		}	}
-		audit.out();
-		return rc;
+				rc = new Strings(
+						"loaded repertoires include "+
+						new Strings( 
+								(TreeSet<String>)Concept.loaded()
+						).toString( Config.andListFormat() )
+				);
+		}
+		return audit.out( rc );
 }	}

@@ -7,6 +7,7 @@ import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Config;
 import org.enguage.sign.factory.Spoken;
+import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.interpretant.intentions.Reply;
 import org.enguage.sign.object.list.Item;
 import org.enguage.sign.object.sofa.Overlay;
@@ -104,11 +105,13 @@ public class Enguage {
 	private void completeTransaction( Strings sayThis ) { // 
 		if (imagined()) {
 			Overlay.undoTxn();
-			Repertoires.signs().reset( sayThis );
+			if (sayThis.begins( Response.dnu() ))
+				Repertoires.signs().ignoreNone();
 			
 		} else if (Utterance.isUnderstood()) {
 			Overlay.commitTxn();
-			Repertoires.signs().reset( sayThis );
+			if (sayThis.begins( Response.dnu() ))
+				Repertoires.signs().ignoreNone();
 			
 		} else {
 			// really lost track?
