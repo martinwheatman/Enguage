@@ -67,7 +67,7 @@ On "does SAID-EFFECT because SAID-CAUSE", do EFFECT because CAUSE.
 #] am i baking a cake     : yes, you're baking a cake.
 #] how many eggs do i need: 3, you need 3 eggs.
 #] why do i need 3 eggs   : because you're baking a cake.
-#] do I need 3 eggs because I am baking a cake:
+#] do i need 3 eggs because i am baking a cake:
 #] 			yes, you need 3 eggs because you're baking a cake.
 
 #] subtitle check for infinite loops:-.

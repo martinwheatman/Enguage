@@ -145,31 +145,4 @@ public class Utterance {
 		}	}
 		if (!frag.isEmpty()) rc.add( frag );
 		return rc;
-//	}
-	// --
-	// -- Conjunctions - End
-	// --
-
-	// test code...
-//	private static void test( Enguage e,  String str ) {
-//		Audit.log( "Said: "+ str );
-//		for (Strings single :
-//			Utterance.conjuntionAlley(
-//					new Strings( str ), Config.andConjunction()
-//		)	) {
-//			Audit.log( "  said: "+ single );
-//			Audit.log( "  outp: "+ e.mediate( ""+single ));
-//		}
-//	}
-//	public static void main( String[] arg ) {
-//		Enguage e = new Enguage( Enguage.RW_SPACE );
-//		
-//		// There are three types (levels) of conjunction...
-//		//   i) "I need fish and chips"                << fish and chips
-//		//  ii) "I need coffee and biscuits"           << and-list
-//		// iii) "I need some gas and I want a Ferrari" << concept conjunction
-//		
-//		test( e, "I need a fish   and chips" );
-//		test( e, "I need a coffee and a buscuit" );
-//		test( e, "and I need a porche and i need an open road" );
 }	}

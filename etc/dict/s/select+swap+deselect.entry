@@ -1,0 +1,48 @@
+## #######################################################
+## #######################################################
+## Implementing Radio-button Identity "select martin as i"
+## #######################################################
+## #######################################################
+	
+On "select NAME as SELECTION":
+	entity SELECTION exists;
+	if so, reply "sorry, SELECTION already exists";
+	create entity NAME; # ensure it exists!
+	rename entity NAME SELECTION;
+	set the name of SELECTION to NAME. 
+
+On "deselect SELECTION":
+	get the name of SELECTION;
+	set entity to ...;
+	rename SELECTION as ENTITY;
+	unset the name of ENTITY.
+	
+On "swap SELECTION to NAME":
+	deselect SELECTION;
+	select NAME as SELECTION.
+	
+#] what does martin need: sorry, i don't know who martin is.
+#] who am i             : sorry, i don't know your name.
+#] martin needs a coffee: ok, martin needs a coffee.
+#] what does martin need: martin needs a coffee.
+
+#] select martin as i   : ok.
+#] who am i             : you're martin.
+#] what do i need       : you need a coffee.
+#] what does martin need: sorry , i don't know who martin is.
+
+#] deselect i           : ok.
+#] who am i             : sorry , i don't know your name.
+#] what do i need       : you don't need anything.
+#] what does martin need: martin needs a coffee.
+
+#] select martin as i   : ok.
+#] ruth needs a tea     : ok, ruth needs a tea.
+#] swap i to ruth       : ok.
+#] who am i             : you're ruth.
+#] what do i need       : you need a tea.
+
+## Check it works on things that don't exist...
+#] deselect fred : ok.
+#] select fred as tmp.
+ 

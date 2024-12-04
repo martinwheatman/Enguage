@@ -313,14 +313,15 @@ public class Intention {
 	
 	// Various separators for sep(), below, 
 	// and Intentions.toSpokenList()
-	public static String  AND_SEP = ". And, ";
-	public static String THEN_SEP = ". Then, ";
-	public static String ELSE_SEP = ". Otherwise, ";
-	public static String   IF_SEP = "if ";
-	public static String THEN_PLUS_PLUS = ". And then, ";
+	public static final String  AND_SEP = "; and, ";
+	public static final String THEN_SEP = "; then, ";
+	public static final String ELSE_SEP = "; otherwise, ";
+	public static final String   IF_SEP = "if ";
+	public static final String THEN_PLUS_PLUS = "; and then, ";
 	public String sep( boolean first ) {
 		// a REPLY will force a break in the description.
 		return type == N_REPLY ||
 				type == N_THEN_REPLY ||
-				type == N_ELSE_REPLY  ? ELSE_SEP : first ? THEN_SEP : THEN_PLUS_PLUS;
+				type == N_ELSE_REPLY  ? ELSE_SEP :
+					first ? THEN_SEP : THEN_PLUS_PLUS;
 }	}

@@ -12,16 +12,6 @@ public class SofaPerform {
 	
 	private SofaPerform() {}
 	
-	private static String formatAnswer( String answer ) {
-		if (Moment.valid( answer )) // 88888888198888 -> 7pm
-			return new When( answer ).rep( Response.dnk() ).toString();
-		else if (answer.equals( Response.notOkay().toString() ))
-			return Response.notOkay().toString();
-		else if (answer.equals( Response.okay().toString() ))
-			return Response.okay().toString();
-		return answer;
-	}
-	
 	private static final String ARGS = "args=";
 	
 	public  static void perform( Reply r, Strings values) {perform( r, values, false );}
@@ -49,7 +39,11 @@ public class SofaPerform {
 				
 			else {
 				// Methods should return "OK", "Sorry" etc.
-				String answer = formatAnswer( rawAnswer.toString());
+				String answer = rawAnswer.toString();
+				
+				if (Moment.valid( answer )) // 88888888198888 -> 7pm
+					answer = new When( answer ).rep( Response.dnk() ).toString();
+				
 				r.answer( answer );
 				r.type( Response.typeFromStrings(
 						new Strings( answer )

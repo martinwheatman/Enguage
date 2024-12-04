@@ -5,7 +5,6 @@ import java.util.TreeSet;
 import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.Config;
-import org.enguage.sign.Sign;
 import org.enguage.sign.Signs;
 import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.interpretant.intentions.Engine;
@@ -79,12 +78,6 @@ public class Repertoires {
 		return rc;
 	}
 	
-	private static Strings doFind( Strings cmds ) {
-		Audit.log( "in find: "+ cmds.toString( Strings.SQCSV ));
-		String utterance = Attribute.getValue( ""+cmds );
-		return signs.find( new Strings( utterance ));
-	}
-	
 	public static Strings perform( Strings cmds ) {
 		Strings rc = Response.notOkay();
 		audit.in( "perform", "cmds="+ cmds );
@@ -97,8 +90,11 @@ public class Repertoires {
 			else if (cmd.equals( "variable" ))
 				rc = Variable.perform( new Strings( "show" ));
 				
-			else if (cmd.equals( "find" ))
-				rc = doFind( cmds );
+			else if (cmd.equals( "implications" ))
+				// "i need a coffee" => <implications>
+				rc = signs.findImplies(
+						new Strings( Attribute.getValue( ""+cmds ) )
+				);
 				
 			else if (cmd.equals( "list" ))
 				/* This becomes less important as the interesting stuff 

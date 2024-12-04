@@ -6,11 +6,18 @@ On "attribute get ENT ATTR":
 	perform "value get ENT ATTR";
 	if not, reply "sorry, i do not know";
 	reply "ok, the ATTR of ENT is ...".
-
-# attribute unset martin name X
-
+	
+On "attribute unset ENT ATTR":
+	perform "value unset ENT ATTR";
+	reply "ok".
+	
 On "attribute isSet ENT ATTR":
 	perform "value isSet ENT ATTR";
 	if so, reply "yes, the ATTR of ENT is set.";
 	reply "no, the ATTR of ENT is not set".
+
+On "attribute equals ENT ATTR PHRASE-VALUE":
+	perform "value equals ENT ATTR VALUE";
+	if so, reply "yes, the ATTR of ENT is set to VALUE.";
+	reply "no, the ATTR of ENT is not set to VALUE".
 

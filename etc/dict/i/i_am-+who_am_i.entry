@@ -1,0 +1,31 @@
+### This should implement and test a push-button identity
+###
+
+On "i am NAME":
+	is the name of i set to NAME;
+	if so, reply "yes, i know";
+	deselect       i; # ok if not selected
+	select NAME as i; # ok, if it doesn't exist
+	reply "ok, you are NAME".
+	
+On "who am i":
+	get the name of i;
+	if so, reply "you are ...";
+	answer you;
+	reply "sorry, i do not know your name".
+	
+
+#] what does martin need: sorry, i don't know who martin is.
+#] martin needs a coffee: ok, martin needs a coffee.
+#] ruth   needs a tea   : ok, ruth   needs a tea.
+
+#] who am i             : sorry, i don't know your name.
+
+#] i am martin          : ok, you're martin.
+#] who am i             : you're martin.
+#] what do i need       : you need a coffee.
+
+#] i am ruth            : ok, you're ruth.
+#] what do i need       : you need a tea.
+
+#] i am james           : ok, you're james.

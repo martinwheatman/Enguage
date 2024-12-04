@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.enguage.repertoires.Repertoires;
-import org.enguage.repertoires.concepts.Autoload;
 import org.enguage.repertoires.concepts.Concept;
 import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.interpretant.intentions.Reply;
@@ -138,7 +137,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 				"("+ name +"="+ size() +") "
 				+ "'"+ u.toString() +"' "
 		 		+ (ignore.isEmpty() ? "" : "avoiding "+ignore ));
-			audit.debug( "concepts: ["+ Autoload.loaded().toString(Strings.CSV) +"]");
+			//audit.debug( "concepts: ["+ Autoload.loaded().toString(Strings.CSV) +"]");
 	}	}
 	private void auditMatch( int key, Sign s, Attributes match ) {
 		if (Audit.allAreOn()) {
@@ -147,7 +146,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 			audit.debug( "Concept: "+s.concept() +"," );
 			if (!match.isEmpty())
 				audit.debug( "   with: "+ match.toString() +"," );
-			if (!Context.context().isEmpty())
+			if (!Context.valueOf().isEmpty())
 				audit.debug( "    and: "+ Context.valueOf());
 	}	}
 	private void auditOut( String answer ) {
@@ -209,7 +208,7 @@ public class Signs extends TreeMap<Integer,Sign> {
 		return r;
 	}
 	
-	public Strings find( Strings utterance ) {
+	public Strings findImplies( Strings utterance ) {
 		Strings rc = Response.notOkay( utterance +": not found" );
 		Utterance u = new Utterance( utterance );
 		audit.in( "find", "u="+ u +", utterance="+ utterance );

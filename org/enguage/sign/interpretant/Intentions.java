@@ -99,11 +99,10 @@ public class Intentions extends ArrayList<Intention> {
 	}
 	
 	public Strings toSpokenList( Attributes matches ) {
-		Strings sb = new Strings();
+		Strings strs = new Strings();
 		if (this.isEmpty()) {
-			sb.append( "nothing" );
+			strs.append( "nothing" );
 		} else {
-			Audit.log( ">>>>>matches: "+ matches );
 			int line = 0;
 			String sep = "";
 			for (Intention in : this) {
@@ -114,29 +113,30 @@ public class Intentions extends ArrayList<Intention> {
 				{ // X, and, if so Y
 					sep = Intention.AND_SEP;
 				}
-				sb.append( sep );
+				strs.append( sep );
 				// "SOMETHING" -> "that something"
 				for (String s : new Strings( str )) { // English-isms
-					if (s.equals( "..." ))
-						sb.append( "whatever" );
+					if (s.equals( "..." )) // lets not put in Config.placeholder()!
+						strs.append( "whatever-it-was" );
+					
 					else if (allUpperCase( s ) && !s.equals("A")
 							&& !s.equals("I") && !s.equals(","))
 					{ // I is ok
 						String tmp = matches.deref( s );
 						if (!tmp.equals( s )) {
-							sb.append( tmp );
+							strs.append( tmp );
 						} else {
-							sb.append( s.toLowerCase() );
+							strs.append( s.toLowerCase() );
 						}
 					} else {
-						sb.append( s );
+						strs.append( s );
 					}
 				}
 
 				sep = in.sep( line==0 );
 				line = sep.equals( Intention.ELSE_SEP ) ? 0 : ++line;
 		}	}
-		return sb;
+		return strs;
 	}
 	
 	// ------------------------------------------------------------------------

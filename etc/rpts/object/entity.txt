@@ -1,11 +1,12 @@
 On "create entity NAME":
 	assert that entity NAME exists;
 	if so, reply "yes, NAME is already an entity";
-	perform "entity create NAME" ;
+	perform "entity create NAME";
 	reply "ok, NAME is an entity".
 
 On "delete entity NAME":
 	perform "entity delete NAME";
+	if not, reply "sorry, NAME does not exist";
 	reply "ok, NAME deleted".
 	
 On "ignore entity NAME":

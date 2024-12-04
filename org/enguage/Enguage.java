@@ -85,7 +85,16 @@ public class Enguage {
 		audit.out();
 		return reply;
 	}
-	public String mediate( String said ) {return mediate( Overlay.DEFAULT_USERID, said );}
+	public String mediate( String said ) {
+		if (said.equals( "debug on" )) {
+			Audit.on();
+			return "ok";
+		} else if (said.equals( "debug off" )) {
+			Audit.off();
+			return "ok";
+		} else
+			return mediate( Overlay.DEFAULT_USERID, said );
+	}
 	public String mediate( String uid, String said ) {
 		audit.in( "mediate", "uid="+uid+", said="+said );
 		Strings rc = new Strings();

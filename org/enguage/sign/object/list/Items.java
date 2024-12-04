@@ -322,6 +322,7 @@ public class Items extends ArrayList<Item> {
 			rc = Response.okay();
 				
 		} else if (sa.size() == 0) {
+			
 			if (cmd.equals("get"))
 				rc = new Strings( list.toString());
 			

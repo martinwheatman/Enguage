@@ -17,8 +17,8 @@ public class Reply {
 	 * ]
 	 */
 	
-	private static final Audit       audit = new Audit( "Reply" );
-	public  static final String DEFAULT_PH = "whatever"; // Placeholder
+	private static final Audit      audit = new Audit( "Reply" );
+	public  static final String ANSWER_PH = "whatever"; // Placeholder
 
 	private boolean repeated = false;
 	public  void    repeated( boolean s ) {repeated = s;}
@@ -100,13 +100,10 @@ public class Reply {
 	 * To strings....
 	 */
 	private Strings replyToStrings() {
-		if (format.isEmpty()) {
-			format = new Strings( answer() ); // use the raw answer
-			if (format.isEmpty()) // so a was equal to ""
-				format = Response.dnu();
+		if (format.isEmpty())
+			format = answer().isEmpty() ? Response.dnu() : new Strings( answer() ); 
 			
-		} else
-			if (format.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
+		else if (format.contains( Strings.ELLIPSIS )) // if required put in answer (verbatim!)
 			format.replace( Strings.ellipsis, answer() );
 		
 		else if (format.contains( Config.placeholder() ))

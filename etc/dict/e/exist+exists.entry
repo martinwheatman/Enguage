@@ -1,0 +1,11 @@
+On "does ENTITY exist":
+	perform "entity exists ENTITY";
+	if not, reply "no, ENTITY does not exist";
+	reply "yes, ENTITY exists".
+
+On "ENTITY exists", create ENTITY.
+	
+#] does martin exist.
+#] martin exists.
+#] does martin exist.
+#] delete martin.

@@ -4,12 +4,12 @@ On "what does that imply":
 
 On "what does this imply":
 	what does that imply;
-	reply "ok, this implies ...".
+	reply "ok, this implies that ...".
 
 On "forget this", perform "sign destroy".
 
 On "what does PHRASE-UTTERANCE imply":
-	perform "repertoire find UTTERANCE";
+	perform "repertoire implications UTTERANCE";
 	reply "ok, this implies ...".
 
 #] i can say i need something:
@@ -27,9 +27,18 @@ On "what does PHRASE-UTTERANCE imply":
 #]                         ok, reply ok i need that something.
 
 #] what does this imply :
-#]          ok , this implies that something exists in your needs list . And , if so , reply "i know" . Otherwise , remove that something from your noneed list . Then , add that something to your needs list . And then , reply "ok , i need something".
+#]          ok , this implies that that something exists in your needs list; 
+#]            and , if so , reply "i know" ; 
+#]            otherwise , remove that something from your noneed list ; 
+#]            then , add that something to your needs list ; 
+#]            and then , reply "ok , i need something".
 
 #] forget this.
 
-
-#] what does i need coffee imply.
+## This is clearly duff!!
+#] what does i need coffee imply: ok , this implies set subject to i;
+#]              then , coffee exists in subject needs list;
+#]              and , if so , reply "yes, i know";
+#]              otherwise , if not , add coffee to subject needs list;
+#]              and , if not , append coffee onto subject needs list;
+#]              and then , reply ok , you need whatever-it-was.

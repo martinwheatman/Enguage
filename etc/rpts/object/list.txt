@@ -40,7 +40,7 @@ On "get    the       cause    of PHRASE-EFFECT from SUBJECT LIST list",         
 On "get    the       NAME     of PHRASE-WHOM   from SUBJECT LIST list",                   perform "items getAttrVal SUBJECT LIST NAME WHOM".
 On "get                                             SUBJECT LIST list",                   perform "items        get SUBJECT LIST".
 On "get                                             SUBJECT LIST list where NAME equals PHRASE-VALUE",
-                                                                                                      perform "items   getWhere SUBJECT LIST NAME VALUE".
+                                                                                          perform "items   getWhere SUBJECT LIST NAME VALUE".
 On "delete                                          SUBJECT LIST list",                   perform "items     delete SUBJECT LIST".
 On "how many             UNIT of PHRASE-THIS     in SUBJECT LIST list",                   perform "items   quantity SUBJECT needs THIS UNIT".
 On "how many                     PHRASE-THIS     in SUBJECT LIST list",                   perform "items   quantity SUBJECT needs THIS".

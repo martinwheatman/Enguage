@@ -1,9 +1,11 @@
 package org.enguage.sign.interpretant.intentions;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.enguage.sign.Assets;
+import org.enguage.sign.Config;
 import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.object.Variable;
 import org.enguage.util.audit.Audit;
@@ -44,6 +46,7 @@ public class Commands {
 	 	 * We have no control over what text the command sends back.
 	 	 * A zero result is success.
 	 	 * Passing back a non-zero result is a failure.
+	 	 * No room for other response types
 	 	 */
 	 	r.type( rc == 0 ? Response.Type.OK : Response.Type.SOZ );
 	 	r.format( rc == 0 ? "ok, ..." : "sorry, ..." );
@@ -55,7 +58,7 @@ public class Commands {
 	public  Commands injectParameter( String runningAns ) {
 		command = new Strings( command )
 				.replace( Strings.ellipsis, runningAns )
-				.replace( "whatever", runningAns )
+				.replace( Config.placeholder(), runningAns )
 				.toString();
 		return this;
 	}
@@ -103,7 +106,7 @@ public class Commands {
 				errString.add( "Command failed: "+ command );
 				r = runResult( 1, errString  );
 			}
-		} catch (Exception iox) {
+		} catch (IOException iox) {
 			Strings errString = new Strings();
 			errString.add( "I can't run: "+ command );
 			r = runResult( 1, errString );
@@ -116,18 +119,4 @@ public class Commands {
 				.command( cmd )
 				.injectParameter( answer )
 				.run();
-	}
-
-
-	// ---
-	public static void main( String[] args) {
-		Audit.resume();
-		audit.tracing( true );
-		audit.debugging( true );
-		
-		Reply r = new Reply();
-		Audit.log( ">>>"+ r.answer());
-		
-		r = new Commands().command( "ls" ).injectParameter( "" ).run();
-		Audit.log( ">>" + r.toString());
 }	}

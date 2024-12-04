@@ -179,9 +179,9 @@ public class Overlay {
 			String cwd = System.getProperty( "user.dir" );
 			series( new File( cwd ).getName() );
 			
-			audit.debug( "attaching to "+ new File( cwd ).getName() );
+			//audit.debug( "attaching to "+ new File( cwd ).getName() );
 			Link.fromString( root + series, cwd );
-			audit.debug( "Linking: "+ root +"=+="+ series +" to"+ cwd );
+			//audit.debug( "Linking: "+ root +"=+="+ series +" to"+ cwd );
 			//
 			countOverlays();
 			while (highest < LOWEST)

@@ -1,0 +1,10 @@
+On "rename FROM as TO", rename entity FROM TO.
+
+On "rename entity FROM TO":
+	perform "entity rename FROM TO";
+	reply "ok, FROM renamed TO".
+	
+#] create martin.
+#] rename martin as ruth: ok, martin renamed ruth.
+#] delete martin        : sorry, martin doesn't exist.
+#] delete ruth          : ok, ruth deleted.

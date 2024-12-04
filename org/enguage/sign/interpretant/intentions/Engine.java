@@ -68,6 +68,16 @@ public final class Engine {
 					.pattern( "reply PHRASE-X" )
 					.append( Intention.N_THEN_REPLY, "X" )
 					.concept( NAME ),
+
+			new Sign()
+					.pattern( "answer PHRASE-X" )
+					.append( Intention.N_ALLOP, "answer X" )
+					.concept( NAME ),
+
+			new Sign()
+					.pattern( "echo PHRASE-X" )
+					.append( Intention.N_ALLOP, "echo X" )
+					.concept( NAME ),
 					
 			new Sign() // for vocal description of concepts... autopoiesis!
 					.pattern( "perform PHRASE-ARGS" )
@@ -90,11 +100,25 @@ public final class Engine {
 					// then re-think X
 					.append( Intention.N_THEN_THINK, "X" )
 					.concept( NAME )
-		 };
+	};
+	
+	private static void doRepeat( Reply r ) {
+		
+		if (Reply.previous() == null) {
+			audit.debug("Allop:repeating dnu");
+			r.format( Response.dnu());
+			
+		} else {
+			audit.debug("Allop:repeating: "+ Reply.previous());
+			r.repeated( true );
+			r.format( new Strings( Config.repeatFormat()));
+			r.answer( Reply.previous().toString());
+			r.type( Response.typeFromStrings( Reply.previous() ));
+	}	}
 	
 	public static Reply interp( Intention in, Reply r ) {
 		r.answer( Response.okay().toString() ); // bland default reply to stop debug output look worrying
-		r.type(   Response.typeFromStrings( Response.okay() ));
+		r.type(   Response.Type.OK );
 
 		Strings cmds = Context.deref( new Strings( in.value() )).normalise();
 		String  cmd  = cmds.remove( 0 );
@@ -105,6 +129,12 @@ public final class Engine {
 			// ...so, reload variables
 			Variable.encache();
 				
+		} else if (cmd.equals( "answer" )) {
+			r.answer( cmds.toString() );
+		
+		} else if (cmd.equals( "echo" )) {
+			r.format( cmds.toString() );
+		
 		} else if (cmd.equals( IGNORE_STR )) {
 			Repertoires.signs().ignore( cmds );
 		
@@ -123,16 +153,7 @@ public final class Engine {
 			r.type( Response.typeFromStrings( new Strings( tmp ) ));
 			
 		} else if ( in.value().equals( "repeat" )) {
-			if (Reply.previous() == null) {
-				audit.debug("Allop:repeating dnu");
-				r.format( Response.dnu());
-			} else {
-				audit.debug("Allop:repeating: "+ Reply.previous());
-				r.repeated( true );
-				r.format( new Strings( Config.repeatFormat()));
-				r.answer( Reply.previous().toString());
-				r.type( Response.typeFromStrings( Reply.previous() ));
-			}
+			doRepeat( r );
 			
 		} else if (cmd.equals( "say" )) {
 			// 'say' IS: 'say "what";' OR: 'say egress is back to the wheel;'
