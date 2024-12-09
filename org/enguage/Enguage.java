@@ -82,21 +82,28 @@ public class Enguage {
 		// If we've picked up a source, attribute it!
 		reply = InfoBox.attributeSource( reply );
 
+		
+		// final outgoing - swap pronoun direction!
+		// remove my/your from colloquia.txt + use this code...
+		// holding hands falls over, so turn debug on ;-)
+//		Strings tmp = new Strings();
+//		for (String str : reply ) {
+//			for (String s : new Strings(str )) {
+//				if (s.equals( "my" ))
+//					tmp.append( "your" );
+//				else if (s.equals( "your" ))
+//					tmp.append( "my" );
+//				else
+//					tmp.append( s );
+//		}	}
+//		reply = tmp;
+		
 		audit.out();
 		return reply;
 	}
-	public String mediate( String said ) {
-		if (said.equals( "debug on" )) {
-			Audit.on();
-			return "ok";
-		} else if (said.equals( "debug off" )) {
-			Audit.off();
-			return "ok";
-		} else
-			return mediate( Overlay.DEFAULT_USERID, said );
-	}
-	public String mediate( String uid, String said ) {
-		audit.in( "mediate", "uid="+uid+", said="+said );
+	
+	public String mediateMulti( String uid, String said ) {
+		audit.in( "mediateMulti", "uid="+uid+", said="+said );
 		Strings rc = new Strings();
 		for (Strings single :
 				Utterance.conjuntionAlley(
@@ -106,8 +113,19 @@ public class Enguage {
 			if (!rc.isEmpty()) rc.add( "and" );
 			rc.addAll( mediateSingle( uid, single ));
 		}
-		audit.out( rc );
+		audit.out();
 		return rc.toString();
+	}
+	
+	public String mediateDefaultDebug( String said ) {
+		if (said.equals( "debug on" ))
+			return Audit.on().toString();
+		
+		else if (said.equals( "debug off" ))
+			return Audit.off().toString();
+		
+		else
+			return mediateMulti( Overlay.DEFAULT_USERID, said );
 	}
 	
 	// helper methods...
@@ -199,5 +217,5 @@ public class Enguage {
 			cmds = cmds.toLowerCase();
 			
 			// ...and interpret
-			Audit.log( enguage.mediate( cmds.toString() ));
+			Audit.log( enguage.mediateDefaultDebug( cmds.toString() ));
 }	}	}

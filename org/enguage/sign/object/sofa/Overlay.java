@@ -8,20 +8,24 @@ import org.enguage.sign.object.sofa.fs.Path;
 import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
-import org.enguage.util.sys.Shell;
-
-class OverlayShell extends Shell {
-	OverlayShell( Strings args ) { super( Overlay.NAME, args ); }
-	public Strings interpret( Strings argv ) { return interpret( argv ); }
-}
 
 public class Overlay {
-	public static  final String NAME = "overlay";
-	static               Audit audit = new Audit( "Overlay" ); //.tracing( true ).logging( true );
-	public static  final int      ID = 188374473; //Strings.hash( "overlay" );
 	
-	public static  final String DEFAULT_USERID = "uid"; //"sofa"
-	public static  final String        DEFAULT = "Enguage"; //"sofa"
+	public  static final String NAME = "overlay";
+	private static final Audit audit = new Audit( NAME ); //.tracing( true ).logging( true )
+	public  static final int      ID = 188374473; //Strings.hash( "overlay" )
+	
+	/* root/uid/   (uid="series")
+	 *  +----------+ - 0/   <--+read here
+	 *  |+----------+ - 1/  <--+
+	 *  +|+----------+ - 2/ <--+ 
+	 *   +| entity   |      <---write here
+	 *   +| !deleted |
+	 *    | ^from^to | #rename (not implemented!)
+	 *    +----------+
+	 */
+	public static  final String DEFAULT_USERID = "uid";
+	public static  final String        DEFAULT = "Enguage";
 	public static  final int       MODE_READ   = 0; // "r"
 	public static  final int       MODE_WRITE  = 1; // "w"
 	public static  final int       MODE_APPEND = 2; // "a"
@@ -30,11 +34,22 @@ public class Overlay {
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	// --- overlay singleton
+	// ---
+	
+	private Overlay() {p = new Path( System.getProperty( "user.dir" ));}
+	
+	private static Overlay overlay = new Overlay();
+	public  static Overlay get() {return overlay;}
+	public  static void    set( Overlay o ) {overlay = o;}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	// --- naming conventions
 	// ---
 	private static final char   DELETE_CH  = '!';  // RENAME_CH = "^"
 	private static final String DELETE_STR = ""+DELETE_CH;
-	public static boolean isDeleteName( String name ) {
+	public  static boolean isDeleteName( String name ) {
 		return new File( name ).getName().charAt( 0 ) == DELETE_CH;
 	}
 	public static String nonDeleteName( String name ) {
@@ -47,19 +62,11 @@ public class Overlay {
 	public static String deleteName( String name ) {
 		if (!isDeleteName( name )) {
 			File f = new File( name );
-			name = f.getParent() +"/"+ DELETE_STR + f.getName();
+			return f.getParent() +"/"+ DELETE_STR + f.getName();
 		}
 		return name;
 	}
 	
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	// --- overlay singleton
-	// ---
-	private static Overlay overlay = new Overlay();
-	public  static Overlay get() {return overlay;}
-	public  static void    set( Overlay o ) {overlay = o;}
-
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	// --- object space - just write directly into Fs.root()
@@ -88,7 +95,6 @@ public class Overlay {
 	}
 	public Strings list( String dname ) {
 		Strings rc = new Strings();
-		audit.in( "list", "dname="+ dname );
 
 		p.pathListDelete();
 		
@@ -101,23 +107,17 @@ public class Overlay {
 			int     n = -1;
 			int count = highest+1;
 			String suffix = absName.substring( p.pwd().length());
-			while (++n < count) {
+			while (++n < count)
 				p.insertDir( root + n + suffix, "" );
-			}
 		}
 		
 		Iterator<Path.Pent> pi = p.iterator(); 
 		while ( pi.hasNext() )
 			rc.add( pi.next().name() );
-		
-		audit.out( rc );
+
 		return rc;
 	}
- 
-	public Overlay() {
-		p = new Path( System.getProperty( "user.dir" ));
-	}
-	
+ 	
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	// --- Version management
@@ -128,20 +128,22 @@ public class Overlay {
 	private static void  series( String nm ) {if (nm != null) series = nm; }
 	
 	// version numbers...
-	// private static final int lowest() {return 1;}
-	private static final int LOWEST = 1;
+	// private static final int lowest() {return 1
+	private static final int  LOWEST = 1;
 	
 	private static final int  DEFAULT_HIGHEST = -1; // 0, 1, ..., n => 1+n; -1 == detached
 	private static       int  highest = DEFAULT_HIGHEST; // 0, 1, ..., n => 1+n; -1 == detached
+	private static final int  highest() {return highest;}
 	private static final void highest( int n ) {highest = n;}
+	
 	private static final void countOverlays() {
 		highest( DEFAULT_HIGHEST );
 		String[] files = new File( root ).list();
-		if (files != null) for (String file : files)
-			try {	int tmp = Integer.parseInt( file );
-					if (tmp > highest) highest( tmp );
-			} catch (Exception ex) {/*ignore*/}
-		//audit.debug( "Counted overlays:"+ highest );
+		if (files != null)
+			for (String file : files)
+				try {	int tmp = Integer.parseInt( file );
+						if (tmp > highest) highest( tmp );
+				} catch (Exception ex) {/*ignore*/}
 	}
 	
 	// ------------------------------------------------------------------------
@@ -149,14 +151,12 @@ public class Overlay {
 	// --- create/delete versions
 	// ---
 	public  static boolean exists() {
-		return Fs.exists( root+ series + Link.EXT );
+		return Fs.exists( root + series + Link.EXT );
 	}
 	public  static void    append() {
-		//audit.debug( "appending: "+ highest +" -> "+ (highest+1) );
 		new File( nth( ++highest )).mkdirs();
 	}
 	public  static void    remove() {
-		//audit.debug( "removing: "+ highest );
 		Fs.destroy( nth( highest-- ));
 	}
 	
@@ -170,7 +170,8 @@ public class Overlay {
 	
 	private static String  nth( int vn ) {return root + vn;}
 	
-	public  static void    attach( String userId ) {
+	public  static Strings attach( String userId ) {
+		Strings rc = Response.okay();
 		if (!attached()) {
 			attached( true );
 			//
@@ -179,14 +180,19 @@ public class Overlay {
 			String cwd = System.getProperty( "user.dir" );
 			series( new File( cwd ).getName() );
 			
-			//audit.debug( "attaching to "+ new File( cwd ).getName() );
+			//audit.debug( "attaching to "+ new File( cwd ).getName() )
 			Link.fromString( root + series, cwd );
-			//audit.debug( "Linking: "+ root +"=+="+ series +" to"+ cwd );
+			//audit.debug( "Linking: "+ root +"=+="+ series +" to"+ cwd )
 			//
 			countOverlays();
-			while (highest < LOWEST)
-				append();
+			while (highest() < LOWEST)
+				append(); // side effect - increments highest
 		}
+		if (highest < 0) {
+			audit.debug( "No such series: "+ userId );
+			rc = Response.notOkay();
+		}
+		return rc;
 	}
 	public static  void    detach() {
 		if (attached()) {
@@ -206,19 +212,17 @@ public class Overlay {
 			);
 	}	}
 	private static void commit() {
-		//audit.in("commit", "");
 		// We always want a top overly we can remove next time
 		// so consolidate the lower overlays to one and rename the 
 		// top one to "1"
 		while (highest > 0) {
 			// combine two highest overlays
-			//audit.debug( "commit(): "+ highest +" => "+ (highest-1));
+			//audit.debug( "commit(): "+ highest +" => "+ (highest-1))
 			combineWithLower( highest );
-			//showVersions();
+			//showVersions()
 			highest--;
 		}
 		append();
-		//audit.out();
 	}
 	private static void consolidate() {
 		if (attached()) {
@@ -243,25 +247,28 @@ public class Overlay {
 	// --- Legacy methods
 	// ---
 	private String nthCandidate( String nm, int vn ) {
-		return nth( vn < 0       ? 0 :
-		            vn > highest ? highest : vn
-		          ) + File.separator + nm;
+		if (vn < 0)
+			vn = 0;
+		else if (vn > highest)
+			vn = highest;
+		return nth( vn ) + File.separator + nm;
 	}
 	private String topCandidate( String name ) {
-		return nthCandidate( name, highest);
+		return nthCandidate( name, highest );
 	}
 	private String delCandidate( String name, int n ) {
 		File f = new File( nthCandidate( name, n ));
 		return f.getParent() +"/"+ DELETE_STR + f.getName(); 
 	}
 	private String find( String vfname ) {
-		String fsname = null;
-		int vn = highest+1; // number=3 ==> 0,1,2, so initially decr vn
-		while (--vn >= 0)
-			if (Fs.exists( fsname = nthCandidate( vfname, vn ) ))
+		int vn = highest+1; // number=3 ==> 0,1,2, so...
+		while (--vn >= 0) { // ...initially decr vn
+			String fsname = nthCandidate( vfname, vn );
+			if (Fs.exists( fsname ))
 				return fsname;
 			else if (Fs.exists( delCandidate( vfname, vn ) )) 
-				return topCandidate( vfname ); // look no further - return top (non-existing) file	
+				return topCandidate( vfname ); // look no further - return top (non-existing) file
+		}
 		return vfname;
 	}
 	private boolean isOverlaid( String vfname ) {
@@ -278,14 +285,27 @@ public class Overlay {
 	//          - if not found, or if the file has been deleted, the (non-existing) write filename is returned
 	//          - if rename found (e.g. old^new), change return the old NAME.
 	public static String fname( String vfname, int modeChs ) {
-		String fsname = vfname; // pass through!
+		//
+		// one-off hack! To help remove the _user and _host 3rd-Party virt. users.
+		if (vfname.equals ( "me" ))
+			vfname = "i";
+		else if (vfname.startsWith( "me/" )) {
+			vfname = "i/" + vfname.substring( 3 );
+		} else if (vfname.equals ( "my" )) 
+			vfname = "i";
+		else if (vfname.startsWith( "my/" )) {
+			vfname = "i/" + vfname.substring( 3 );
+		}
+		//
+		//
 		if (attached() && overlay.isOverlaid( vfname ))
 			switch (modeChs) {
-				case MODE_READ   : fsname = overlay.find( vfname ); break;
-				case MODE_DELETE : fsname = overlay.delCandidate( vfname, highest ); break;
-				default          : fsname = overlay.topCandidate( vfname ); // MODE_WRITE | _APPEND
+				case MODE_READ   : return overlay.find( vfname ); 
+				case MODE_DELETE : return overlay.delCandidate( vfname, highest );
+				default          : return overlay.topCandidate( vfname ); // MODE_WRITE | _APPEND
 			}
-		return fsname;
+		else
+			return vfname;
 	}
 	
 	// ===
@@ -314,71 +334,48 @@ public class Overlay {
 	// ------------------------------------------------------------------------
 	// --- Transactions
 	// ---
-	public  static void startTxn()  {
-		//audit.in( "startTxn", "");
-		append();
-		//audit.out();
-	}
+	public  static void startTxn() { append();}
 	public  static void undoTxn()  {
-		//audit.in( "undoTxn", "" );
 		if (highest > LOWEST) {
 			remove(); // this (empty!)
 			remove(); // last/aborted
 			append(); // replace current
-		}
-		//audit.out();
-	}
-	public  static void commitTxn() {
-		//audit.in( "commitTxn", "" );
-		consolidate();
-		//showVersions();
-		//audit.out();
-	}
+	}	}
+	public  static void commitTxn() { consolidate();}
 	public  static void destroyTxns() {
-		while (highest>=LOWEST)
-			remove(); // this adjusts 'highest'
+		while (highest>=LOWEST) remove(); // this adjusts 'highest'
 	}
 	
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	// --- user level inspection - called from interpret
-	// ---
-	private static String toStringIndented(String s) {
-		return s.replace( "\n", "\n"+Audit.indent());
-	}
-	private static void showVersions() {showVersions( "_user/needs" );}
-	private static void showVersions( String fname ) {
-		for (int n = 0; n <= highest; n++) {
-			String file = Fs.stringFromFile( "selftest/uid/"+ n +"/"+ fname );
-			file = file.equals( "" ) ? "-" : file.replace("\n     ","");
-			Audit.log( toStringIndented( n +": " +file ));
-	}	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
 	// --- perform "overlay [attach|detach|...] <args>"
 	// ---
+	private static Strings doCommitHelper( String value ) {
+		Strings rc = Response.okay();
+		if (value.equals( "" ))
+			commitTxn();
+		else if (value.equals( "full" ))
+			commit();
+		else
+			rc = Response.notOkay();
+		return rc;
+	}
 	public static Strings perform( Strings argv ) {
 		
-		String rc = Response.okay().toString();
+		Strings rc = Response.okay();
 		int argc = argv.size();
 		
 		String  cmd    = argv.remove( 0 );
-		String  value  = argv.toString();
 		
 		if (cmd.equals( "attach" )) {
-			attach( value );
-			if (highest < 0) {
-				audit.debug( "No such series: "+ value );
-				rc = Response.notOkay().toString();
-			}
+			rc = attach( argv.toString() );
 				
 		} else if (cmd.equals( "detach" ) && (1 == argc)) {
 			detach();
 			
 		} else if (cmd.equals( "count" ) && (1 == argc)) {
 			// Remember, 0 => 1, 0,1 => 2: should be consecutive!
-			rc = "ok, "+ (1 + highest);
+			rc = Response.okay(""+(1 + highest));
 			
 		} else if (cmd.equals( "start"  ) && (1 == argc) ) {
 			startTxn();
@@ -389,33 +386,16 @@ public class Overlay {
 		} else if (cmd.equals( "destroy"  ) && (1 == argc) ) {
 			destroyTxns();
 			
-		} else if (cmd.equals( "debug" )) {
-			audit.debugging( value.equals( "on" ) || value.equals( "debugging" ));
-			audit.tracing(   value.equals( "on" ) || value.equals( "tracing" ));
-			
 		} else if (cmd.equals( "commit" )) {
+			rc = doCommitHelper( argv.toString() );
 			
-			if (1 == argc)
-				commitTxn();
-			else if (value.equals( "full" ))
-				commit();
-			else
-				rc = Response.notOkay().toString();
-			
-		}  else if (cmd.equals( "versions" )) {
-			Audit.log( "versions: >"+ value +"<" );
-			if (1 == argc)
-				showVersions();
-			else
-				showVersions(argv.toString( Strings.CONCAT ));
-	
 		} else {
-			rc = Response.notOkay().toString();
+			rc = Response.notOkay();
 			audit.debug( "Usage: attach <series>\n"
 			                 +"     : detach\n"
 			                 +"     : save\n"
 			                 +"     : count\n"
 			                 +"given: "+ argv.toString( Strings.CSV ));
 		}
-		return new Strings( rc );
+		return rc;
 }	}

@@ -222,23 +222,10 @@ On "how many PHRASE-THIS does SUBJECT need":
 On "i need PHRASE-THIS":
 	set subject to i;
 	THIS exists in SUBJECT needs list;
-	if so, reply "yes, i know";
+	if so, reply "yes, i know"; ## need on yes
 	if not, add THIS to SUBJECT needs list;
 	if not, append THIS onto SUBJECT needs list;
 	reply ok, you need ... .
-
-On "what do i need":
-	set subject to i;
-	get SUBJECT needs list;
-	if not, reply "you do not need anything";
-	reply "you need ...".
-
-On "i need NUMERIC-QUANTITY PHRASE-THIS":
-	set subject to i;
-	QUANTITY THIS exists in SUBJECT needs list;
-	if so, reply "yes, i know";
-	if not, add QUANTITY THIS to SUBJECT needs list;
-	reply "ok, you need ... ".
 
 On "i need AND-LIST-THESE": #a cup of coffee and some biscuits
 	i need FIRST-OF-THESE;
@@ -247,37 +234,27 @@ On "i need AND-LIST-THESE": #a cup of coffee and some biscuits
 	reply "ok, you need THESE".
 
 On "i        need         NUMERIC-QUANTITY", i need QUANTITY THIS.
-On "i        need         nothing":
-	i do not need anything;
-	reply "ok, you don't need anything".
 
 On "i        need to get  PHRASE-THIS", me needs THIS.
 On "i do not need to get  PHRASE-THIS", me does not need THIS.
 
 On "i do not need AND-LIST-THESE":
-	set subject to i;
-	SUBJECT does not need THESE;
+	i does not need THESE;
 	reply "ok, you don't need THESE".
 
-On "do i need PHRASE-THIS",          does me need THIS.
-
-
 On "do i need PHRASE-THIS":
-	set subject to i;
-	THIS exists in SUBJECT needs list;
+	THIS exists in me needs list;
 	if not, reply "no, you does not need THIS";
 	reply "yes, you need THIS".
 
 On "do i need NUMERIC-QUANTITY PHRASE-THIS":
-	set subject to i;
-	QUANTITY THIS exists in SUBJECT needs list;
+	QUANTITY THIS exists in me needs list;
 	if not, reply "no, you do not need QUANTITY THIS";
 	reply "yes, you need QUANTITY THIS".
 
 On "do i need NUMERIC-QUANTITY UNIT of PHRASE-THIS":
-	set subject to i;
-	QUANTITY UNIT of THIS exists in SUBJECT needs list;
-	if not, reply "no, you does not need QUANTITY UNIT of THIS";
+	QUANTITY UNIT of THIS exists in me needs list;
+	if not, reply "no, you do not need QUANTITY UNIT of THIS";
 	reply "yes, you need QUANTITY UNIT of THIS".
 
 
@@ -306,6 +283,15 @@ On "i do not need any PHRASE-THIS":
 	remove any THIS from SUBJECT needs list;
 	if not, reply "i'm sorry, you do not need any THIS";
 	reply "ok, you do not need any THIS".
+
+On "what do i need":
+	get me needs list;
+	if not, reply "you do not need anything";
+	reply "you need ...".
+
+On "i        need         nothing":
+	i do not need anything;
+	reply "ok, you don't need anything".
 
 On "how many PHRASE-THIS do i need":
 	set subject to i;

@@ -1,16 +1,20 @@
 get the queen elizabeth the second page from wikipedia:
 		Ok, the queen elizabeth the second page has been cached.
 
+retrieve the attribute values .
+
 retrieve the born date from the cached page:
 		According to wikipedia , the born date is 21 April 1926.
-		
+
+
 get the france page from wikipedia:
 		Ok, the france page has been cached.
 
 retrieve the capital name from the cached page:
 		According to wikipedia , the capital name is Paris.
 		
-get the eiffel tower page from wikipedia.
-retrieve the attributes list.
+get the eiffel tower page from wikipedia: ok, the eiffel tower page has been cached.
 retrieve the header list height.
+
+retrieve the attribute values.
 		

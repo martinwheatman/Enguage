@@ -8,7 +8,11 @@ meeting is spatial.
 On "SUBJECT is not meeting anybody":
 	delete SUBJECT meeting list;
 	reply "ok, SUBJECT is not meeting anybody".
-On "i am not meeting anybody", _user is not meeting anybody.
+	
+On "i am not meeting anybody":
+	i is not meeting anybody;
+	reply ok, you are not meeting anybody.
+	
 On "i am not meeting anyone",      i am not meeting anybody.
 
 On "SUBJECT is meeting PHRASE-WHOM":
@@ -16,7 +20,10 @@ On "SUBJECT is meeting PHRASE-WHOM":
 	if so, reply "yes, i know";
 	perform "items add SUBJECT meeting WHOM";
 	reply "ok, SUBJECT is meeting WHOM ...".
-On "i am meeting PHRASE-WHOM", _user is meeting WHOM.
+On "i am meeting PHRASE-WHOM":
+	i is meeting WHOM;
+	reply "ok, you are meeting WHOM ...".
+	
 
 On "when is SUBJECT meeting PHRASE-WHOM":
 	get SUBJECT meeting list;       # General i don't know
@@ -27,7 +34,17 @@ On "when is SUBJECT meeting PHRASE-WHOM":
 	get the when of WHOM from SUBJECT meeting list;
 	if not, reply "i don't know when SUBJECT is meeting WHOM";
 	reply "SUBJECT is meeting WHOM ...".
-On "when am i meeting PHRASE-WHOM", when is _user meeting WHOM.
+	
+On "when am i meeting PHRASE-WHOM":
+	get i meeting list;             # General i don't know
+	if not, reply "i do not know "; # 
+	assert i is meeting WHOM;       # 
+	if not, reply "i do not know if you are meeting WHOM"; #
+	# check if and when...
+	get the when of WHOM from i meeting list;
+	if not, reply "i don't know when you are meeting WHOM";
+	reply "you are meeting WHOM ...".
+
 On "what time PHRASE-X", when X.
 
 On "where is SUBJECT meeting PHRASE-WHOM":
@@ -42,22 +59,41 @@ On "where is SUBJECT meeting PHRASE-WHOM":
 	# ok, get the whole caboose...
 	get SUBJECT meeting list;
 	reply "SUBJECT is meeting ...".
-On "where am i meeting PHRASE-WHOM", where is _user meeting WHOM.
+	
+On "where am i meeting PHRASE-WHOM":
+	get i meeting list;       # General i don't know
+	if not, reply "i do not know";  # 
+	assert i is meeting WHOM; # 
+	if not, reply "i do not know if you are meeting WHOM"; #
+	set output format to "WHOM,LOCATOR LOCATION"; # just 'where'
+	# check if by checking location...
+	get the location of WHOM from i meeting list;
+	if not, reply "i do not know where you are meeting WHOM";
+	# ok, get the whole caboose...
+	get i meeting list;
+	reply "you are meeting ...".
 
 On "SUBJECT is not meeting PHRASE-WHOM":
 	perform "items remove SUBJECT meeting WHOM";
 	if not, "yes, i know";
 	reply "ok, SUBJECT is not meeting WHOM".
-On "i am not meeting PHRASE-WHOM", _user is not meeting WHOM.
+On "i am not meeting PHRASE-WHOM":
+	perform "items remove i meeting WHOM";
+	if not, "yes, i know";
+	reply "ok, you are not meeting WHOM".
 
 On "is SUBJECT meeting PHRASE-WHOM":
 	perform "items exists SUBJECT meeting WHOM";
 	if not, reply "no, SUBJECT is not meeting WHOM";
 	reply "yes, SUBJECT is meeting WHOM".
-On "am i meeting PHRASE-WHOM", is _user meeting WHOM.
+	
+On "am i meeting PHRASE-WHOM":
+	is i meeting WHOM;
+	if not, reply "no, you are not meeting WHOM";
+	reply "yes, you are meeting WHOM".
 
 On "who is SUBJECT meeting":
 	perform "items get SUBJECT meeting";
 	if not, reply "SUBJECT is not meeting anybody";
 	reply "SUBJECT is meeting ...".
-On "who am i meeting", who is _user meeting.
+On "who am i meeting", who is i meeting.

@@ -7,18 +7,18 @@ On "SAID-EFFECT because SAID-CAUSE":
 	if so, reply "yes, i know";
 	EFFECT;	if not, say so;
 	CAUSE;	if not, say so;
-	perform "items add _user causal EFFECT CAUSE";
+	perform "items add i causal EFFECT CAUSE";
 	reply "ok, EXT-EFFECT because EXT-CAUSE".
 	
 On "is SAID-EFFECT because SAID-CAUSE":
-	perform "items isLinked _user causal CAUSE EFFECT";
+	perform "items isLinked i causal CAUSE EFFECT";
 	if not, reply "no, EXT-EFFECT is not because EXT-CAUSE";
 	reply "yes, EXT-EFFECT because EXT-CAUSE".
 
 On "why do SAID-EFFECT":
 	do EFFECT;
 	if not, say so;
-	get the cause of EFFECT from _user causal list;
+	get the cause of EFFECT from i causal list;
 	if not, reply "i do not know";
 	set cause to ...;
 	reply "because EXT-CAUSE".
@@ -27,12 +27,12 @@ On "why does SAID-EFFECT", why do EFFECT.
 On "why am i PHRASE-EFFECT":
 	am i EFFECT;
 	if not, reply "sorry, i didn't know you are EXT-EFFECT";
-	get the cause of i am EFFECT from _user causal list;
+	get the cause of i am EFFECT from i causal list;
 	set cause to ...;
 	reply "because EXT-CAUSE".
 
 On "why might SAID-EFFECT":
-	get the cause of EFFECT from _user causal list;
+	get the cause of EFFECT from i causal list;
 	if not, reply "i don't know";
 	set cause to ...;
 	reply "because EXT-CAUSE".
@@ -41,13 +41,13 @@ On "why does SAID-EFFECT", why do EFFECT.
 On "why should we PHRASE-ACTION":
 	should we ACTION;
 	if not, say so;
-	get the cause of you should ACTION from _user causal list;
+	get the cause of you should ACTION from i causal list;
 	if not, reply "i don't know";
 	set cause to ...;
 	reply "because EXT-CAUSE".
 
 On "do SAID-EFFECT because SAID-CAUSE":
-	does EFFECT exist in _user causal list;
+	does EFFECT exist in i causal list;
 	if not, reply "sorry, it is not the case that EXT-EFFECT";
 	is EFFECT because CAUSE;
 	if not, reply "sorry, it is not the case EXT-EFFECT because EXT-CAUSE";

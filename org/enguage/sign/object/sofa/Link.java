@@ -7,9 +7,9 @@ import org.enguage.util.strings.Strings;
 import org.enguage.util.sys.Fs;
 
 public class Link {
-	static public  final String NAME = "link";
-	static public  final int      ID = 217371; //Strings.hash( "link" );
-	static private       Audit audit = new Audit( "Link" );
+	public  static final String NAME = "link";
+	public  static final int      ID = 217371; //Strings.hash( "link" );
+	private static       Audit audit = new Audit( "Link" );
 	
 	/* Need to support:
 	 *   Composites : martin/hand holding ruth/hand: martin/hand/holding = "ruth/hand"
@@ -19,53 +19,50 @@ public class Link {
 	// **************
 	// ************** FS Helpers - java fs model is s...  symlink-less!
 	// **************
-	static public final String EXT = ".symlink" ;
-	static public boolean isLink( String s ) {
+	public static final String EXT = ".symlink" ;
+	public static boolean isLink( String s ) {
 		return	s.length() > EXT.length()
 				&& s.substring( s.length() - EXT.length()).equals( EXT );
 	}
-	static public String linkName( String name ) {return isLink( name ) ? name : name + EXT;}
-	static public boolean fromString( String nm, String val ) {
+	public static String linkName( String name ) {return isLink( name ) ? name : name + EXT;}
+	public static boolean fromString( String nm, String val ) {
 		return Fs.stringToFile( Overlay.fname( linkName( nm ), Overlay.MODE_WRITE ), val );
 	}
-	static public String content( String nm ) { return Fs.stringFromFile( linkName( nm ));}
+	public static String content( String nm ) { return Fs.stringFromFile( linkName( nm ));}
 	
-//	static private String extrd( String e, String a ) {return Overlay.fsname( e +"/"+ a, Overlay.MODE_READ );}
-//	static private String extwr( String e, String a ) {return Overlay.fsname( e +"/"+ a, Overlay.MODE_WRITE );}
-
 	// **************
 	// ************** two recursive Link commands:
 	// **************
 
-	static private boolean exists(String entity, String attr, String value ) {
+	private static boolean exists(String entity, String attr, String value ) {
 		Value  v   = new Value( entity, attr );
 		String val = v.get();
 		return v.exists() && (val.equals( value ) || exists( val, attr, value ));
 	}
-	static private boolean attribute(String e, String l, String a, String val ) {
+	private static boolean attribute(String e, String l, String a, String val ) {
 		Value v;
 		return !e.equals( "" ) &&
 				(((v = new Value( e, a     )).exists() && v.equals( val )) ||
 				 ((v = new Value( e, l+EXT )).exists() && attribute( v.get(), l, a, val )));
 	}
 	//---
-	static private void usage( Strings a ) { usage( a.toString());}
-	static private void usage( String a ) {
+	private static void usage( Strings a ) { usage( a.toString());}
+	private static void usage( String a ) {
 		audit.error(
 				"Usage: link: [set|get|exists|attribute|destroy|delete] <ent> <link> [<value>]\n"+
 				"given: "+ a );
 	}
-	static public Strings perform( Strings args ) {
+	public static Strings perform( Strings args ) {
 		audit.in( "interpret", "["+ args.toString( Strings.CSV ) +"]" ); 
 		Strings rc = Response.notOkay();
 		int argc = args.size();
 		if (argc >= 3 || argc <= 5) {
 			rc = Response.okay();
-			String	cmd    = args.remove( 0 ),
-					entity = args.remove( 0 ),
-					attr   = args.remove( 0 ),
-					target = argc > 3 ? args.remove( 0 ) : "",
-					value  = argc > 4 ? args.remove( 0 ) : "";
+			String	cmd    = args.remove( 0 );
+			String	entity = args.remove( 0 );
+			String	attr   = args.remove( 0 );
+			String	target = argc > 3 ? args.remove( 0 ) : "";
+			String	value  = argc > 4 ? args.remove( 0 ) : "";
 			
 			// We now get passed and un-stripped attribute...
 			if (Attribute.isAttribute( entity )) entity = new Attribute( entity ).value();
@@ -84,10 +81,10 @@ public class Link {
 						: exists( entity, attr+EXT, target ) ? Response.yes() : Response.no());
 				
 			else if (cmd.equals("delete"))
-				if (target.equals( "" ))
+				if (target.equals( "" ) ||
+					exists( entity, attr+EXT, target ))
 					new Value( entity, attr+EXT ).ignore();
-				else if (exists( entity, attr+EXT, target ))
-					new Value( entity, attr+EXT ).ignore();
+			
 				else
 					rc =  Response.notOkay();
 				

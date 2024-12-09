@@ -1,16 +1,18 @@
 On "what does that imply":
 	perform "sign list";
-	reply "ok, that implies ...".
+	if not, reply "sorry, nothing to see here";
+	reply "ok, first, ...".
 
 On "what does this imply":
 	what does that imply;
-	reply "ok, this implies that ...".
+	if not, reply "sorry, nothing to see here";
+	reply "so, ...".
 
 On "forget this", perform "sign destroy".
 
 On "what does PHRASE-UTTERANCE imply":
-	perform "repertoire implications UTTERANCE";
-	reply "ok, this implies ...".
+	perform "repertoire show intents UTTERANCE";
+	reply "so, ...".
 
 #] i can say i need something:
 #]                         ok, you can say i need something.
@@ -27,18 +29,24 @@ On "what does PHRASE-UTTERANCE imply":
 #]                         ok, reply ok i need that something.
 
 #] what does this imply :
-#]          ok , this implies that that something exists in your needs list; 
+#]          so, that something exists in your needs list; 
 #]            and , if so , reply "i know" ; 
 #]            otherwise , remove that something from your noneed list ; 
 #]            then , add that something to your needs list ; 
 #]            and then , reply "ok , i need something".
 
 #] forget this.
+#] what does this imply.
 
-## This is clearly duff!!
-#] what does i need coffee imply: ok , this implies set subject to i;
-#]              then , coffee exists in subject needs list;
-#]              and , if so , reply "yes, i know";
-#]              otherwise , if not , add coffee to subject needs list;
-#]              and , if not , append coffee onto subject needs list;
-#]              and then , reply ok , you need whatever-it-was.
+#] what does i need coffee imply: so, set subject to i;
+#]              then, coffee exists in subject needs list;
+#]              and, if so , reply yes, i know;
+#]              otherwise, if not , add coffee to subject needs list;
+#]              and, if not , append coffee onto subject needs list;
+#]              and then, reply ok , you need whatever-it-was.
+
+#] what does what do i need imply:
+#]              so , get me needs list;
+#]              and , if not , reply you don't need anything;
+#]              otherwise , reply you need whatever-it-was.
+.

@@ -15,7 +15,7 @@ public class Example {
 								: new Strings(args).toString();
 		Enguage enguage = new Enguage(); // default space is Enguage.RW_SPACE 
 		
-		String reply = enguage.mediate( utterance );
+		String reply = enguage.mediateDefaultDebug( utterance );
 		Audit.log( reply );
 	}
 }

@@ -55,7 +55,7 @@ public class UnitTest {
 		if (expected == null || !expected.equals( "-" ))
 			Audit.log( TEST_PROMPT+ cmd +".");
 		
-		String reply = Enguage.get().mediate( cmd );
+		String reply = Enguage.get().mediateDefaultDebug( cmd );
 
 		if (expected == null || !expected.equals( "-" )) {
 		

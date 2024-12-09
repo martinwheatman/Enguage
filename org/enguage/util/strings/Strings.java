@@ -852,7 +852,8 @@ public class Strings extends ArrayList<String> implements Comparable<Strings> {
 				divisions.add( division );
 				division = new Strings();
 		}	}
-		divisions.add( division );
+		if (!division.isEmpty())
+			divisions.add( division );
 		return divisions;
 	}
 	public ArrayList<Strings> divide( String terminator, boolean inclusive ) {

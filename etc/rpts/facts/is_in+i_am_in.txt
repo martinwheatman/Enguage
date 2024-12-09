@@ -1,7 +1,7 @@
 On "CITY is in COUNTRY":
-	perform "items add _user cityCountry CITY COUNTRY";
+	perform "items add i cityCountry CITY COUNTRY";
 	reply "ok, CITY is in COUNTRY".
 	
 On "i am in CITY":
-	get the country of CITY from _user cityCountry list;
+	get the country of CITY from i cityCountry list;
 	reply "ok, you are in ...".

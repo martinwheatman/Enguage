@@ -84,7 +84,7 @@ public class EnguagePanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			String uid= "swing"; // see ./var/swing
 			String utterance = t1.getText();
-			String reply = Enguage.get().mediate( uid, utterance );
+			String reply = Enguage.get().mediateMulti( uid, utterance );
 			t2.setText( reply );
 			t2.setBackground( 
 				whatColourShouldIbe( t2.getBackground() )

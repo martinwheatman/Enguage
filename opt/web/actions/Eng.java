@@ -37,7 +37,7 @@ public class Eng {
 	}
 	private static String viaForm( String[] params ) {
 		return "<center><strong>"
-				+ Enguage.get().mediate(
+				+ Enguage.get().mediateMulti(
 						params[ 0 ].split( "=" )[ 1 ],
 						Terminator.stripTerminator(
 								new Strings( params[ 1 ].split( "=" )[ 1 ].split( "%20" ))
@@ -47,7 +47,7 @@ public class Eng {
 				+ "</strong></center></P>";
 	}
 	private static String viaUrl( String uid, String[] params ) {
-		String reply =  Enguage.get().mediate(
+		String reply =  Enguage.get().mediateMulti(
 							uid,
 							new Strings(
 									params[ 1 ].split( "=" )[ 1 ].split( "%20" )

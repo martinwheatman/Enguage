@@ -1,7 +1,7 @@
 On"tidy up violence test":
 	delete violence advocate list;
 	delete violence fear     list;
-	delete _user causal list;
+	delete i causal list;
 	unset the value of they;
 	reply "ok, tidied up".
 

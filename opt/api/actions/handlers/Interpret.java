@@ -20,7 +20,7 @@ public class Interpret extends ActionHandler {
             new Strings( utterance.split(" ") ).normalise()
         ).toString();
 
-        String reply = Enguage.get().mediate(sessionId, utteranceStrippedOfTerminator);
+        String reply = Enguage.get().mediateMulti(sessionId, utteranceStrippedOfTerminator);
 
         return new HttpResponse(reply);
     }

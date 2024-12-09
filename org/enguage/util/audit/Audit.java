@@ -14,8 +14,13 @@ public class Audit {
 
 	// === auditing on/off API
 	private static  boolean auditOn = false;
-	public  static  void    off() {auditOn = false; indent.reset();}
-	public  static  void    on() {auditOn = true;}
+	public  static  Strings off() {
+		auditOn = false;
+		indent.reset();
+		return Response.okay();}
+	public  static  Strings on() {
+		auditOn = true;
+		return Response.okay();}
 	public  static  boolean isOn() {return auditOn;}
 	
 	private boolean tracing = false; // per object
@@ -38,7 +43,7 @@ public class Audit {
 	private              String   className = "";
 
 	// === global DEBUG switches...
-	public  static final boolean  numericDebug = false;
+	public  static final boolean  NUMERIC_DEBUG = false;
 	
 	// === timestamp
 	private static  long then = new GregorianCalendar().getTimeInMillis();

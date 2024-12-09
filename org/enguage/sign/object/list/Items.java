@@ -55,7 +55,7 @@ public class Items extends ArrayList<Item> {
 	}
 	public  String toString() { return toString( null ); }
 	private String toString( Item pattern ) { // to Items class!
-		audit.in( "get", "item="+ (pattern==null?"ALL":pattern.toXml()));
+		audit.in( "toString", "item="+ (pattern==null?"ALL":pattern.toXml()));
 		Groups g=new Groups();
 		for (Item item : this)
 			if (pattern == null || item.matches( pattern ))

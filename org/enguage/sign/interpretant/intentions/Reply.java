@@ -4,7 +4,6 @@ import org.enguage.sign.Config;
 import org.enguage.sign.interpretant.Response;
 import org.enguage.sign.symbol.Utterance;
 import org.enguage.util.attr.Context;
-import org.enguage.util.audit.Audit;
 import org.enguage.util.strings.Strings;
 import org.enguage.util.strings.Terminator;
 
@@ -17,7 +16,6 @@ public class Reply {
 	 * ]
 	 */
 	
-	private static final Audit      audit = new Audit( "Reply" );
 	public  static final String ANSWER_PH = "whatever"; // Placeholder
 
 	private boolean repeated = false;
@@ -48,8 +46,8 @@ public class Reply {
 	/* ------------------------------------------------------------------------
 	 * Answer - a simple string "42" or list "coffee and biscuits"?
 	 */
-	private String NO_ANSWER = "";	
-	private String answer = NO_ANSWER;	
+	private String noAnswer = "";	
+	private String answer = noAnswer;	
 	public  Reply  answer( String ans ) {answer = ans; return this;}
 	public  String answer() {return answer;}
 	
@@ -93,7 +91,7 @@ public class Reply {
 	public void toIdk() {
 		format( Response.dnk());
 		type( Response.Type.DNK );
-		answer( NO_ANSWER ); // reset
+		answer( noAnswer ); // reset
 	}
 	
 	/* ------------------------------------------------------------------------
@@ -129,26 +127,18 @@ public class Reply {
 	 *  Intention
 	 */
 	public Reply reply( Strings values ) {
-		audit.in( "reply", "value="+ values +", r="+ (values.isEmpty()?"SAY SO":toString() ));
-
-		//Strings v = Intention.format( values, answer, false ...
-		// 'formatting'subs '...' occurs on toString()
-		Strings v = new Strings( values );
-		
 		// Accumulate reply - currently "say this"
-		if (v.equals( Config.accumulateCmds() )) // say so -- possibly need new intention type?
+		if (values.equals( Config.accumulateCmds() )) // say so -- possibly need new intention type?
 			Reply.say( sayThis());
 		
 		// propagate reply and return - currently "say so"
-		else if (v.equals( Config.propagateReplys() ))
+		else if (values.equals( Config.propagateReplys() ))
 			doneIs( true ); // just pass out this reply
 		
 		else {// reply "I don't understand" is like an exception?
-			format( v );
-			type( Response.typeFromStrings( v ));
+			format( new Strings( values ));
+			type( Response.typeFromStrings( values ));
 			doneIs( type() != Response.Type.DNU );
 		}
-		
-		audit.out( toString() );
 		return this;
 }	}

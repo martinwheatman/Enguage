@@ -79,7 +79,7 @@ public class Intentions extends ArrayList<Intention> {
 				String str = in.toString();
 				if (str.startsWith( Intention.IF_SEP )
 						&& (sep.equals( Intention.THEN_SEP ) ||
-							sep.equals( Intention.THEN_PLUS_PLUS )))
+							sep.equals( Intention.AND_THEN_SEP )))
 				{ // X, and, if so Y
 					sep = Intention.AND_SEP;
 				}
@@ -98,6 +98,48 @@ public class Intentions extends ArrayList<Intention> {
 		return sb;
 	}
 	
+	private String getSep( String sep, String line ) {
+		if (line.startsWith( Intention.IF_SEP )
+				&& (sep.equals( Intention.THEN_SEP ) ||
+					sep.equals( Intention.AND_THEN_SEP )))
+		{ // X, and, if so Y
+			sep = Intention.AND_SEP;
+		}
+		return sep;
+	}
+	
+	private Strings toSpoken( String s, Attributes matches ) {
+		//Audit.log( "toString: "+ s );
+		Strings strs = new Strings();
+		if (s.equals( "..." )) // lets not put in Config.placeholder()!
+			strs.append( "whatever-it-was" );
+			
+		else if (allUpperCase( s ) && !s.equals("A")
+				&& !s.equals("I") && !s.equals(","))
+		{ // I is ok
+			String tmp = matches.deref( s );
+			if (!tmp.equals( s ))
+				strs.append( tmp );
+			else
+				strs.append( s.toLowerCase() );
+			
+		} else
+			strs.append( s );
+
+		return strs;
+	}
+	private Strings toSpoken( Attributes matches, String str ) {
+		Strings strs = new Strings();
+		for (String s : new Strings( str )) {
+			if (Strings.isQuoted( s )) {
+				s = Strings.stripQuotes( s );
+				for (String t : new Strings( s ))
+					strs.addAll( toSpoken( t, matches ));
+			} else
+				strs.addAll( toSpoken( s, matches ));
+		}
+		return strs;
+	}
 	public Strings toSpokenList( Attributes matches ) {
 		Strings strs = new Strings();
 		if (this.isEmpty()) {
@@ -107,32 +149,12 @@ public class Intentions extends ArrayList<Intention> {
 			String sep = "";
 			for (Intention in : this) {
 				String str = in.toString();
-				if (str.startsWith( Intention.IF_SEP )
-						&& (sep.equals( Intention.THEN_SEP ) ||
-							sep.equals( Intention.THEN_PLUS_PLUS )))
-				{ // X, and, if so Y
-					sep = Intention.AND_SEP;
-				}
+				
+				sep = getSep( sep, str );
 				strs.append( sep );
-				// "SOMETHING" -> "that something"
-				for (String s : new Strings( str )) { // English-isms
-					if (s.equals( "..." )) // lets not put in Config.placeholder()!
-						strs.append( "whatever-it-was" );
-					
-					else if (allUpperCase( s ) && !s.equals("A")
-							&& !s.equals("I") && !s.equals(","))
-					{ // I is ok
-						String tmp = matches.deref( s );
-						if (!tmp.equals( s )) {
-							strs.append( tmp );
-						} else {
-							strs.append( s.toLowerCase() );
-						}
-					} else {
-						strs.append( s );
-					}
-				}
-
+				
+				strs.addAll( toSpoken( matches, str ));
+				
 				sep = in.sep( line==0 );
 				line = sep.equals( Intention.ELSE_SEP ) ? 0 : ++line;
 		}	}

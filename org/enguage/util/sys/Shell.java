@@ -72,7 +72,7 @@ public class Shell {
 				stream = Strings.combine( sentences );
 				if (!sentence.isEmpty()) {
 					Audit.log(
-						Enguage.get().mediate( ""+sentence )
+						Enguage.get().mediateDefaultDebug( ""+sentence )
 					);
 		}	}	}
 	}

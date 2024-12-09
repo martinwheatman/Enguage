@@ -137,7 +137,6 @@ public class Signs extends TreeMap<Integer,Sign> {
 				"("+ name +"="+ size() +") "
 				+ "'"+ u.toString() +"' "
 		 		+ (ignore.isEmpty() ? "" : "avoiding "+ignore ));
-			//audit.debug( "concepts: ["+ Autoload.loaded().toString(Strings.CSV) +"]");
 	}	}
 	private void auditMatch( int key, Sign s, Attributes match ) {
 		if (Audit.allAreOn()) {
@@ -156,25 +155,6 @@ public class Signs extends TreeMap<Integer,Sign> {
 	// --- Audit end
 	// -----------------------------
 	
-	private Reply contextualMediate( Attributes match, Sign s ) {
-		Context.push( match );
-		Reply r = s.intentions().mediate(); // may pass back DNU
-		Context.pop();
-		return r;
-	}
-	
-	private Reply doMatch( Sign s, Attributes match ) {
-		audit.in( "doMatch", "sign="+ s.pattern() +", vals="+ match );
-		
-		Pronoun.update( match );
-		match.toVariables();
-		
-		Reply r = contextualMediate( match, s );
-		
-		audit.out( "Signs.interpretation() returned "+ r.type() );
-		return r;
-	}
-
 	public Reply mediate( Utterance u ) {
 		Reply r = new Reply();
 		auditIn( u );
@@ -193,25 +173,27 @@ public class Signs extends TreeMap<Integer,Sign> {
 				Sign s = e.getValue(); // s knows if it is temporal!	
 				// do we need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
-				if (null == match) {
-					//audit.debug( "NO match: "+ s.pattern() +"("+ s.pattern().notMatched()+")" )
-					// ; // java doesn't have a 'null' operator!
-				} else {
+				if (null != match) {
 					saveForIgnore( key );
 					auditMatch( key, s, match );
-					r = doMatch( s, match );
+					
+					Pronoun.update( match );
+					match.toVariables();
+					Context.push( match );
+					r = s.intentions().mediate(); // may pass back DNU
+					Context.pop();
+					
 					// if reply is DNU, this meaning is not appropriate!
 					if (r.type() != Response.Type.DNU)
 						break;
 		}	}	}
-		auditOut( "reply="+ r.toString() );
+		auditOut( r.toString() );
 		return r;
 	}
 	
-	public Strings findImplies( Strings utterance ) {
+	public Strings listIntents( Strings utterance ) {
 		Strings rc = Response.notOkay( utterance +": not found" );
 		Utterance u = new Utterance( utterance );
-		audit.in( "find", "u="+ u +", utterance="+ utterance );
 		Set<Map.Entry<Integer,Sign>> entries = entrySet();
 		Iterator<Map.Entry<Integer,Sign>> ei = entries.iterator();
 		
@@ -227,16 +209,12 @@ public class Signs extends TreeMap<Integer,Sign> {
 				Sign s = e.getValue(); // s knows if it is temporal!	
 				// do we need to check if we're repeating ourselves?
 				Attributes match = u.match( s );
-				if (null == match) {
-					audit.debug( "NO match: "+ s.pattern() +"("+ s.pattern().notMatched()+")" )
-					; // java doesn't have a 'null' operator!
-				} else {
+				if (null != match) {
 					saveForIgnore( key );
 					auditMatch( key, s, match );
 					rc  = s.intentions().toSpokenList( match );
 					break;
 		}	}	}
-		audit.out( "reply="+ rc );
 		return rc;
 	}
 	

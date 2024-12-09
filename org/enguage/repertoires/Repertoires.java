@@ -31,10 +31,6 @@ public class Repertoires {
 	
 	// entry point for Enguage, re-entry point for Intentions
 	public static Reply mediate( Utterance u ) {
-		
-		// not sure why blank mediations are being requested?
-		if ( "".equals( u.toString() )) return new Reply();
-		
 		audit.in( "mediate", "\""+ u.toString() +"\"" );
 		
 		Autoload.autoload( u.representamen() ); // unloaded up in Enguage.interpret()
@@ -49,7 +45,7 @@ public class Repertoires {
 		if (Response.Type.DNU == r.type())
 			r = engine().mediate( u );
 	
-		audit.out( r );
+		audit.out();
 		return r;
 	}
 	
@@ -58,15 +54,20 @@ public class Repertoires {
 	// ------------------------------------------------------------------------
 	private static Strings doShow( Strings cmds ) {
 		Strings rc = Response.okay();
-		
 		String name = cmds.remove( 0 );
+		
 		if (name.equals("signs") ||
 			name.equals("user"))
-			
 			signs.show();
 			
 		else if (name.equals( Engine.NAME ))
 			engine().show();
+
+		else if (name.equals( "intents" ))
+			// "i need a coffee" => <implications>
+			rc = signs.listIntents(
+					new Strings( Attribute.getValue( ""+cmds ) )
+			);
 			
 		else if (name.equals( "all" )) {
 			engine.show();
@@ -89,12 +90,6 @@ public class Repertoires {
 				
 			else if (cmd.equals( "variable" ))
 				rc = Variable.perform( new Strings( "show" ));
-				
-			else if (cmd.equals( "implications" ))
-				// "i need a coffee" => <implications>
-				rc = signs.findImplies(
-						new Strings( Attribute.getValue( ""+cmds ) )
-				);
 				
 			else if (cmd.equals( "list" ))
 				/* This becomes less important as the interesting stuff 

@@ -1,18 +1,12 @@
-#/* TODO: interpret think of a variable entity thus.  // see sofa for particular details!
-# * first create a class variable entity.             // mkdir pub; touch pub/isa 
-# * then  create an anonymous entity variable entity. // mkdir pub/a
-# * then  set the context of the variable entity to a variable entity // ln -s pub/the pub/a
-# * ok.
-# */
 I'm not meeting anybody:                ok, you're not meeting anybody.
-At 7 I'm meeting my brother at the pub: ok , you're meeting your brother at the pub at 7.
-When  am I meeting my brother:          you're meeting your brother at 7.
-Where am I meeting my brother:          you're meeting your brother at the pub.
-Am I meeting my brother:                yes , you're meeting your brother.
+At 7 I'm meeting gary at the pub: ok , you're meeting gary at the pub at 7.
+When  am I meeting gary:          you're meeting gary at 7.
+Where am I meeting gary:          you're meeting gary at the pub.
+Am I meeting gary:                yes , you're meeting gary.
 			
-I'm meeting my sister at the pub.
-When am I meeting my sister: I don't know when you're meeting your sister.
+I'm meeting sis at the pub.
+When am I meeting sis: I don't know when you're meeting sis.
 			
-When am I meeting my dad:    i don't know if you're meeting your dad.
-Where am I meeting my dad:   i don't know if you're meeting your dad.
+When am I meeting dad:    i don't know if you're meeting dad.
+Where am I meeting dad:   i don't know if you're meeting dad.
 

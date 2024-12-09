@@ -1,31 +1,49 @@
-On "when was she born": when was PERSON born.
-On "when was  he born": when was PERSON born.
-On "when was PHRASE-PERSON born":
-	get the PERSON page from wikipedia;
-	if not, reply "sorry, I don't know PERSON";
+On "when was she born", when was THIS_PERSON born.
+On "when was  he born", when was THIS_PERSON born.
+On "when was PHRASE-THIS_PERSON born":
+	get the THIS_PERSON page from wikipedia;
+	if not, reply "sorry, I don't know THIS_PERSON";
 	retrieve the born date from the cached page;
 	if not, say so;
-	reply "ok, PERSON was born on ...".
+	reply "ok, THIS_PERSON was born on ...".
 	
-On "when did she die", when did PERSON die.
-On "when did  he die", when did PERSON die.
-On "when did PHRASE-PERSON die":
-	get the PERSON page from wikipedia;
-	if not, reply "sorry, I don't know PERSON";
+On "when did she die", when did THIS_PERSON die.
+On "when did  he die", when did THIS_PERSON die.
+On "when did PHRASE-THIS_PERSON die":
+	get the THIS_PERSON page from wikipedia;
+	if not, reply "sorry, I don't know THIS_PERSON";
 	retrieve the died date from the cached page;
-	if not, reply "sorry, PERSON is not dead";
-	reply "ok, PERSON died on ...".
+	if not, reply "sorry, THIS_PERSON is not dead";
+	reply "ok, THIS_PERSON died on ...".
 
 
 #]	When was Queen Elizabeth the second born :
-#]			According to Wikipedia, Queen Elizabeth the second was born on 21 April 1926.
+#]			According to Wikipedia, Queen Elizabeth the second 
+#]			was born on 21 April 1926.
+
 #]	When did she die:
-#]			According to Wikipedia, Queen Elizabeth the second died on 8 September 2022 (aged 96).
+#]			According to Wikipedia, Queen Elizabeth the second 
+#]			died on 8 September 2022 (aged 96).
 
 #]	When did Nelson Mandela die :
-#]			According to Wikipedia, Nelson Mandela died on 5 December 2013 (aged 95).
+#]			According to Wikipedia, Nelson Mandela died 
+#]			on 5 December 2013 (aged 95).
+
 #]	When was he born :
-#]			According to Wikipedia, Nelson Mandela was born on 18 July 1918.
+#]			According to Wikipedia, Nelson Mandela was 
+#]			born on 18 July 1918.
 		
 #]	When did Tom Cruise die:
 #]			Sorry, Tom Cruise is not dead.
+
+#]	what does when was she born imply:
+#]		so, when was this person born.
+
+#]	what does when was Queen Elizabeth the second born imply:
+#] 		so, get the Queen Elizabeth the second page from wikipedia; 
+#] 		and, if not, reply sorry, I don't know Queen Elizabeth 
+#]		the second;
+#] 		otherwise, retrieve the born date from the cached page; 
+#] 		and, if not, reply say so;
+#] 		otherwise, reply ok, Queen Elizabeth the second 
+#]		was born on whatever-it-was.

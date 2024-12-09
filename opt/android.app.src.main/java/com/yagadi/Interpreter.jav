@@ -18,7 +18,7 @@ public class Interpreter implements Runnable {
     public void run() {
         String location = context.getExternalFilesDir( null ).getPath();
         Enguage interpreter = new Enguage( location );
-        String reply = interpreter.mediate( utterance );
+        String reply = interpreter.mediateDefaultDebug( utterance );
         callback.callback( reply );
     }
 }

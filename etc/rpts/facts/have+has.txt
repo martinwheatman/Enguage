@@ -1,4 +1,4 @@
-On "i        have to have PHRASE-THIS", _user needs THIS.
+On "i        have to have PHRASE-THIS", i needs THIS.
 On "SUBJECT  has  to have PHRASE-THIS", SUBJECT needs THIS.
 
 On "i        have to      PHRASE-THIS", i        need to THIS.
@@ -10,8 +10,8 @@ On "i        have got     PHRASE-THIS", i do not need THIS.
 On "i        have         PHRASE-THIS", i do not need THIS.
 On "i        have the     PHRASE-THIS", i do not need any THIS.
 
-On "i        have got        everything", _user has everything.
-On "i        have            everything", _user has everything.
+On "i        have got        everything", i has everything.
+On "i        have            everything", i has everything.
 
 On "What do i have", reply "i do not remember what you have".
 

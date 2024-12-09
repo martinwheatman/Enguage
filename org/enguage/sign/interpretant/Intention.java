@@ -14,11 +14,9 @@ import org.enguage.util.strings.Strings;
 
 public class Intention {
 	
-	private static final String       NAME = "Intention";
+	private static final String       NAME = "intention";
 	private static final Audit       audit = new Audit( NAME );
 
-	public  static final String  AUTOP_STR = "autopoiesis";
-	
 	public  static final String   RUN_HOOK = "run";
 	public  static final String    DO_HOOK = "perform";
 	public  static final String REPLY_HOOK = "reply";
@@ -74,6 +72,10 @@ public class Intention {
 	public  static final int N_FINALLY     = 0xff;             // = 255
 	
 	/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////
+	// Conditional stuff - felicity!
 	// need to expand these to add yes and no and ok and sorry explicitly.
 	//
 	private static Strings conditionalFormat = new Strings( "if:,", ':' );
@@ -98,16 +100,14 @@ public class Intention {
 	private static String  noPrefix = "not";
 	private static Strings noPrefix() {return conditionalFormat( noPrefix );}
 	public  static void    noPrefix( String s ) {noPrefix = s;}
-	/////////////////////////////////////////////////////////////
 	
-
 	public  static final int condType( int base, boolean isThen, boolean isElse ) {
 		if (isThen) return base | N_THEN;
 		if (isElse) return base | N_ELSE;
 		return base;
 	}
 	public static int condTypeFromHookStr( String hook, boolean pos, boolean neg ) {
-		if (hook.equals(DO_HOOK))
+		if (      hook.equals(    DO_HOOK))
 			return condType( N_DO,    pos, neg );
 		
 		else  if (hook.equals(   RUN_HOOK ))
@@ -167,6 +167,10 @@ public class Intention {
 		
 		return rc;
 	}
+	/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////
 
 	public Intention( int t, Strings vals ) {this( t, vals.toString());}
 	public Intention( int t, String v ) {type=t; value=v; values=new Strings(v);}
@@ -287,7 +291,7 @@ public class Intention {
 			case N_THEN_RUN   : return THEN_RUN;
 			case N_ELSE_RUN   : return ELSE_RUN;
 			case N_ALLOP      : return Engine.NAME;
-			case N_AUTOP      : return AUTOP_STR;
+			case N_AUTOP      : return NAME;
 			case N_FINALLY    : return FINALLY;
 			default:
 				audit.FATAL( "Intention: returning undefined for: "+ type );
@@ -313,15 +317,17 @@ public class Intention {
 	
 	// Various separators for sep(), below, 
 	// and Intentions.toSpokenList()
-	public static final String  AND_SEP = "; and, ";
-	public static final String THEN_SEP = "; then, ";
-	public static final String ELSE_SEP = "; otherwise, ";
-	public static final String   IF_SEP = "if ";
-	public static final String THEN_PLUS_PLUS = "; and then, ";
+	public static final String      AND_SEP = "; and, ";
+	public static final String     THEN_SEP = "; then, ";
+	public static final String     ELSE_SEP = "; otherwise, ";
+	public static final String       IF_SEP = "if ";
+	public static final String AND_THEN_SEP = "; and then, ";
+	
 	public String sep( boolean first ) {
 		// a REPLY will force a break in the description.
-		return type == N_REPLY ||
-				type == N_THEN_REPLY ||
-				type == N_ELSE_REPLY  ? ELSE_SEP :
-					first ? THEN_SEP : THEN_PLUS_PLUS;
+		return type == N_REPLY      ||
+			   type == N_THEN_REPLY ||
+			   type == N_ELSE_REPLY
+			   ? ELSE_SEP : 
+				   first ? THEN_SEP : AND_THEN_SEP;
 }	}

@@ -26,6 +26,4 @@ On "When host says QUOTED-IN host means QUOTED-EX", perform "colloquial host IN 
 # beware: this is order sensitive - should be based on longest first
 When host says "_host_s"   host means "my".
 When host says "_user_s"   host means "your".
-When host says "_user is"  host means "you are".
-When host says "_user"     host means "you".
 When host says "i will"    host means "you'll".
